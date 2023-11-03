@@ -27,4 +27,5 @@ public class Hashtag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="photo_id")
     private Photo photo;
+
 }
