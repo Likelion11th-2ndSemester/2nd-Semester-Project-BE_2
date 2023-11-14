@@ -22,7 +22,7 @@ public class Image {
     private String imgPath;
     private String repImg;
 
-    // 일대일 단방향 매핑 - 사진
+    // 일대일 단방향 - 사진
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="photo_id")
     private Photo photo;
