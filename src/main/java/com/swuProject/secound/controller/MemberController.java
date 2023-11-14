@@ -1,5 +1,8 @@
-package com.swuProject.secound.security;
+package com.swuProject.secound.controller;
 
+import com.swuProject.secound.domain.Member;
+import com.swuProject.secound.security.JwtTokenProvider;
+import com.swuProject.secound.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +26,7 @@ public class MemberController {
                 .email(user.get("email"))
                 .name(user.get("name"))
                 .nickname(user.get("nickname"))
-                .pn(user.get("pn"))
+                .phoneNumber(user.get("phoneNumber"))
                 .password(passwordEncoder.encode(user.get("password")))
                 .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
                 .build()).getId();
@@ -46,7 +49,7 @@ public class MemberController {
         Map<String, String> response = new HashMap<>();
         if (member != null) {
             response.put("name", member.getName());
-            response.put("pn", member.getPn());
+            response.put("phoneNumber", member.getPhoneNumber());
             response.put("nickname", member.getNickname());
         } else {
             response.put("error", "Member not found");
