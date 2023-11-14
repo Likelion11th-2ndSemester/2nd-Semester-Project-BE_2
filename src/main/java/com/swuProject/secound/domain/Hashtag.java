@@ -1,6 +1,5 @@
-package com.swuProject.secound.entity;
+package com.swuProject.secound.domain;
 
-import com.swuProject.secound.security.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
-public class Hashtag {
+public class Hashtag { // 친구 태그
 
     @Id @GeneratedValue
     @Column(name="hashtag_id")

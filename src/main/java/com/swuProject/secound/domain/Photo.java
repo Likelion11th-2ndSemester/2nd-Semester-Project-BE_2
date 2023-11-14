@@ -1,6 +1,5 @@
-package com.swuProject.secound.entity;
+package com.swuProject.secound.domain;
 
-import com.swuProject.secound.security.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

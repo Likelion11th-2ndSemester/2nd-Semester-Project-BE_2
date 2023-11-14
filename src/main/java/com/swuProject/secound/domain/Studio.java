@@ -1,4 +1,4 @@
-package com.swuProject.secound.entity;
+package com.swuProject.secound.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
