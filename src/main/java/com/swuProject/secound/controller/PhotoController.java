@@ -31,15 +31,20 @@ public class PhotoController {
     @ResponseBody
     @PostMapping("/user/photo/new")
     public ResponseEntity createPhoto(@Valid @RequestBody PhotoFormDto photoFormDto,
-                                      @RequestParam(name="imgFile")MultipartFile imgFile,
+                                      @RequestParam(name="imgFile") MultipartFile imgFile,
+                                      @RequestParam(name="albumId", required=false, defaultValue = "-1") Long albumId,
+                                      @RequestParam(name="studioName") String studioName,
                                       Principal principal) {
 
+        String email = principal.getName();
+
         try {
-            Long id = photoService.createPhoto(photoFormDto, imgFile);
+            Long id = photoService.createPhoto(photoFormDto, imgFile, albumId, studioName, email);
             Photo photo = photoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
             PhotoReturnDto photoReturnDto = PhotoReturnDto.PhotoMapper(photo);
 
             return ResponseEntity.ok(photoReturnDto);
+
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

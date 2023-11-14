@@ -20,6 +20,7 @@ public class Studio {
     @Column(name="studio_id")
     private Long id;
 
+
     // 만족도
     private Long statisfaction;
     // 청결도
