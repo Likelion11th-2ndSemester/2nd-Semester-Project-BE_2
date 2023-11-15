@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public class Article {
     private String content;
 
     @Column
-    private String regTime;
+    private LocalDateTime regTime;
 
     @Column(nullable = true)
     private String postImage;
@@ -34,13 +35,16 @@ public class Article {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @PrePersist
+    public void prePersist() {
+        this.regTime = LocalDateTime.now();
+    }
+
     public void patch(Article article) {
         if (article.title != null)
             this.title = article.title;
         if (article.content != null)
             this.content = article.content;
-        if (article.regTime != null)
-            this.regTime = article.regTime;
         if (article.postImage != null)
             this.postImage = article.postImage;
         if (article.category != null)

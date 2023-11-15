@@ -5,6 +5,8 @@ import com.swuProject.secound.article.entity.Article;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @ToString
 public class ArticleForm {
@@ -14,7 +16,7 @@ public class ArticleForm {
     // 입력 폼에서 전송 받을 필드
     private String title;
     private String content;
-    private String regTime;
+    private LocalDateTime regTime;
     private String postImage; // nullable
     private Category category;
 
