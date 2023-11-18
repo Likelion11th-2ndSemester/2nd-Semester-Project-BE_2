@@ -3,6 +3,8 @@ package com.swuProject.secound.article.api;
 import com.swuProject.secound.article.dto.ArticleForm;
 import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.article.service.ArticleService;
+import com.swuProject.secound.comment.dto.CommentDto;
+import com.swuProject.secound.comment.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +26,14 @@ public class ArticleApiController {
     }
 
     @GetMapping("/articles/{id}")
-    public Article show(@PathVariable Long id) {
-        return articleService.show(id);
+    public ResponseEntity<ArticleDetails> show(@PathVariable Long id) {
+
+        Article article = articleService.show(id);
+        List<CommentDto> comments = articleService.comments(id);
+
+        ArticleDetails articleDetails = new ArticleDetails(article, comments);
+
+        return ResponseEntity.ok(articleDetails);
     }
 
 

@@ -3,6 +3,8 @@ package com.swuProject.secound.article.service;
 import com.swuProject.secound.article.dto.ArticleForm;
 import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.article.repository.ArticleRepository;
+import com.swuProject.secound.comment.dto.CommentDto;
+import com.swuProject.secound.comment.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,22 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     public List<Article> index() {
         return articleRepository.findAll();
     }
 
     public Article show(Long id) {
         return articleRepository.findById(id).orElse(null);
+    }
+
+    public List<CommentDto> comments(Long articleId) {
+        return commentRepository.findByArticleId(articleId)
+                .stream()
+                .map(comment -> CommentDto.createCommentDto(comment))
+                .collect(Collectors.toList());
     }
 
     public Article create(ArticleForm dto) {
