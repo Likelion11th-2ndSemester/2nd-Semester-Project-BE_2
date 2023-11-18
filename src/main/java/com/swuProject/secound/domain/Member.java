@@ -1,4 +1,4 @@
-package com.swuProject.secound.security;
+package com.swuProject.secound.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,11 +33,12 @@ public class Member implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
     @Column(length = 30, nullable = false)
     private String name;
 
     @Column(length = 30, nullable = false)
-    private String pn;
+    private String phoneNumber;
 
     @Column(length = 30, nullable = false)
     private String nickname;

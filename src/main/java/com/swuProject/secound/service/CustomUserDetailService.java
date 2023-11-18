@@ -1,5 +1,6 @@
-package com.swuProject.secound.security;
+package com.swuProject.secound.service;
 //import com.tistory.webfirewood.springsecurityjwt.domain.user.UserRepository;
+import com.swuProject.secound.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
