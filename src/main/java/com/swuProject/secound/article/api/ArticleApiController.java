@@ -2,9 +2,9 @@ package com.swuProject.secound.article.api;
 
 import com.swuProject.secound.article.dto.ArticleForm;
 import com.swuProject.secound.article.entity.Article;
+import com.swuProject.secound.article.dto.ArticleDetails;
 import com.swuProject.secound.article.service.ArticleService;
 import com.swuProject.secound.comment.dto.CommentDto;
-import com.swuProject.secound.comment.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
