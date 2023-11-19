@@ -1,10 +1,8 @@
 package com.swuProject.secound.article.entity;
 
 import com.swuProject.secound.article.constant.Category;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.swuProject.secound.domain.Member;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Entity
-@Getter
+@Getter @Setter
 public class Article {
 
     @Id
@@ -34,6 +32,10 @@ public class Article {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @PrePersist
     public void prePersist() {

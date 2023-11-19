@@ -5,8 +5,10 @@ import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.article.repository.ArticleRepository;
 import com.swuProject.secound.comment.dto.CommentDto;
 import com.swuProject.secound.comment.repository.CommentRepository;
+import com.swuProject.secound.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,9 @@ public class ArticleService {
 
     public Article create(ArticleForm dto) {
         Article article = dto.toEntity();
+
+        Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        article.setMember(member);
 
         if (article.getId() != null) {
             return null;
@@ -77,12 +82,19 @@ public class ArticleService {
 
     public List<Article> createArticles(List<ArticleForm> dtos) {
         List<Article> articleList = dtos.stream()
-                .map(dto -> dto.toEntity())
+                .map(dto -> {
+                    Article article = dto.toEntity();
+
+                    Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    article.setMember(member);
+                    return article;
+                })
                 .collect(Collectors.toList());
-        articleList.stream()
-                .forEach(article -> articleRepository.save(article));
-        articleRepository.findById(-1L)
-                .orElseThrow(() -> new IllegalArgumentException("결제 실패!"));
+
+        articleList.forEach(article -> articleRepository.save(article));
+
+        articleRepository.findById(-1L).orElseThrow(() -> new IllegalArgumentException("작성 실패!"));
+
         return articleList;
     }
 }
