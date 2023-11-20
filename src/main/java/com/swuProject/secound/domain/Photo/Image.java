@@ -1,4 +1,4 @@
-package com.swuProject.secound.domain;
+package com.swuProject.secound.domain.Photo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,11 +21,6 @@ public class Image {
     private String originalImgName;
     private String imgPath;
     private String repImg;
-
-    // 일대일 단방향 - 사진
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="photo_id")
-    private Photo photo;
 
     public void updateImage(String originalImgName, String imgName, String imgPath) {
         this.originalImgName = originalImgName;

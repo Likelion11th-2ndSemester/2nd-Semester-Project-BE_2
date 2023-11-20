@@ -1,5 +1,7 @@
-package com.swuProject.secound.domain;
+package com.swuProject.secound.domain.Photo;
 
+import com.swuProject.secound.domain.Member.Member;
+import com.swuProject.secound.domain.Studio.Studio;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,11 @@ public class Photo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     private Album album;
+
+    // 일대일 단방향 - 이미지
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="image_id")
+    private Image image;
 
     // 다대일 단방향 - 유저
     @ManyToOne(fetch = FetchType.LAZY)
