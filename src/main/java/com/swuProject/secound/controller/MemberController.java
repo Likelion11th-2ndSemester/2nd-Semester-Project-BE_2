@@ -1,6 +1,6 @@
 package com.swuProject.secound.controller;
 
-import com.swuProject.secound.domain.Member;
+import com.swuProject.secound.domain.Member.Member;
 import com.swuProject.secound.security.JwtTokenProvider;
 import com.swuProject.secound.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

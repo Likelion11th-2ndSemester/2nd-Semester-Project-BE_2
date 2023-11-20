@@ -1,5 +1,6 @@
-package com.swuProject.secound.domain;
+package com.swuProject.secound.domain.Studio;
 
+import com.swuProject.secound.domain.Studio.Studio;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,19 +12,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
-public class Scrap { // 공개된 사진만 스크랩 가능
+public class Review {
 
     @Id @GeneratedValue
-    @Column(name = "scrap_id")
+    @Column(name="review_id")
     private Long id;
 
-    // 다대일 단방향 - 유저
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id")
-    private Member member;
+    private String review;
 
     // 다대일 단방향 - 사진
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="photo_id")
-    private Photo photo;
+    @JoinColumn(name="studio_id")
+    private Studio studio;
 }

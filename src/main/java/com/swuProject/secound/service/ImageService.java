@@ -1,6 +1,6 @@
 package com.swuProject.secound.service;
 
-import com.swuProject.secound.domain.Image;
+import com.swuProject.secound.domain.Photo.Image;
 import com.swuProject.secound.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

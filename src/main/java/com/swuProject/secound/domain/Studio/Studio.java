@@ -1,14 +1,13 @@
-package com.swuProject.secound.domain;
+package com.swuProject.secound.domain.Studio;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -20,6 +19,7 @@ public class Studio {
     @Column(name="studio_id")
     private Long id;
 
+
     // 만족도
     private Long statisfaction;
     // 청결도
@@ -27,7 +27,10 @@ public class Studio {
     // 관리 상태
     private Long management;
 
-    private String review;
+    // 일대다 양방향 - 리뷰
+    @OneToMany(mappedBy = "studio")
+    private List<Review> reviewList = new ArrayList<>();
+
     private String phoneNumber;
     private String operatingTime;
 

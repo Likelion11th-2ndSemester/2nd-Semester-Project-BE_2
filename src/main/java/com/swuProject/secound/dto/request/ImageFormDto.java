@@ -1,6 +1,6 @@
 package com.swuProject.secound.dto.request;
 
-import com.swuProject.secound.domain.Image;
+import com.swuProject.secound.domain.Photo.Image;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
