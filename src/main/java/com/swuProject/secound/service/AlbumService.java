@@ -1,17 +1,23 @@
 package com.swuProject.secound.service;
 
-import Album;
+
+import com.swuProject.secound.domain.Photo.Album;
+import com.swuProject.secound.domain.Photo.Photo;
 import com.swuProject.secound.dto.request.AlbumFormDto;
 import com.swuProject.secound.dto.response.AlbumAllReturnDto;
 import com.swuProject.secound.dto.response.AlbumReturnDto;
 import com.swuProject.secound.repository.AlbumRepository;
+import com.swuProject.secound.repository.HashtagRepositoryCustom;
+import com.swuProject.secound.repository.HashtagRepositoryCustomImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -19,6 +25,9 @@ public class AlbumService {
 
     @Autowired
     private AlbumRepository albumRepository;
+
+    @Autowired
+    private HashtagRepositoryCustomImpl hashtagRepositoryCustomImpl;
 
     // 앨범 생성
     public Long createAlbum(AlbumFormDto albumFormDto) {
@@ -68,6 +77,40 @@ public class AlbumService {
         return albumAllReturnDtos;
     }
 
+    // 앨범 전체 조회 - 검색한 친구명 포함 필터링
+    public List<AlbumAllReturnDto> getAlbumListWithHashtag(String username) {
+        // 1. 검색한 유저명을 가진 해시태그 객체와 연관된 사진 객체 조회
+        List<Photo> photoList = hashtagRepositoryCustomImpl.findPhotosByMemberUsername(username);
+
+        // 중복 제거하기 위해 HashSet 생성
+        Set<Album> uniqueAlbumSet = new HashSet<>();
+
+        // 2. photo와 연관된 앨범을 조회하여 중복 제거
+        for (Photo photo : photoList) {
+
+            Album album = photo.getAlbum();
+            if (album != null) {
+                uniqueAlbumSet.add(album);
+            }
+        }
+
+        // 사진 객체를 가지고 있는 앨범 객체 배열
+        List<Album> albumListWithHashtag = new ArrayList<>();
+
+        // 중복 제거한 앨범 셋 리스트에 추가
+        albumListWithHashtag.addAll(uniqueAlbumSet);
+
+        // 엔티티 -> DTO 변환
+        List<AlbumAllReturnDto> albumAllReturnDtos = new ArrayList<>();
+
+        for (Album album : albumListWithHashtag) {
+            AlbumAllReturnDto albumAllReturnDto = AlbumAllReturnDto.AlbumMapper(album);
+            albumAllReturnDtos.add(albumAllReturnDto);
+        }
+
+        return albumAllReturnDtos;
+    }
+
     // 앨범 상세 조회
     @Transactional(readOnly = true)
     public AlbumReturnDto getAlbumDetail(Long album_id) {
@@ -76,4 +119,6 @@ public class AlbumService {
 
         return albumReturnDto;
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.swuProject.secound.dto.request;
 
-import Album;
+import com.swuProject.secound.domain.Photo.Album;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

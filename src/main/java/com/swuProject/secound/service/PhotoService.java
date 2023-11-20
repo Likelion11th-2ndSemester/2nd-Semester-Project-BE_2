@@ -1,6 +1,7 @@
 package com.swuProject.secound.service;
 
 import com.swuProject.secound.domain.Member.Member;
+import com.swuProject.secound.domain.Photo.Album;
 import com.swuProject.secound.domain.Photo.Photo;
 import com.swuProject.secound.domain.Studio.Studio;
 import com.swuProject.secound.dto.request.PhotoFormDto;
@@ -21,7 +22,6 @@ public class PhotoService {
     private final StudioRepository studioRepository;
     private final MemberRepository memberRepository;
     private final AlbumRepository albumRepository;
-    private final ImageService imageService;
 
     // 사진 생성
     public Long createPhoto(PhotoFormDto photoFormDto, MultipartFile imgFile,
@@ -34,7 +34,7 @@ public class PhotoService {
         Studio studio = studioRepository.findByStudioName(studioName);
 
         // 사용자 조회하기
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);;
 
         // 사진 등록
         Photo photo = photoFormDto.createPhoto(); // DTO -> 엔티티 변환

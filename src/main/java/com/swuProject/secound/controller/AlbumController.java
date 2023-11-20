@@ -1,6 +1,7 @@
 package com.swuProject.secound.controller;
 
 import Album;
+import com.swuProject.secound.domain.Photo.Album;
 import com.swuProject.secound.dto.request.AlbumFormDto;
 import com.swuProject.secound.dto.response.AlbumAllReturnDto;
 import com.swuProject.secound.dto.response.AlbumReturnDto;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class AlbumController {
@@ -66,13 +68,15 @@ public class AlbumController {
 
     // 앨범 전체 조회
     @GetMapping("/user/albums")
-    public ResponseEntity albumList(@RequestParam(value = "hashtag", required = false)
-                                                                 String hashtag) {
+    public ResponseEntity albumList(@RequestParam(value = "username", required = false)
+                                                                 String username) {
         // 검색어가 있는 경우
-        if (hashtag != null) {
-            try {
 
-                return null; // 수정 필요
+        if (username != null) {
+            try {
+                List<AlbumAllReturnDto> albumAllReturnDtos = albumService.getAlbumListWithHashtag(username);
+                return ResponseEntity.ok(albumAllReturnDtos);
+
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             }
@@ -80,11 +84,12 @@ public class AlbumController {
             try {
                 List<AlbumAllReturnDto> albumAllReturnDtos = albumService.getAlbumList();
                 return ResponseEntity.ok(albumAllReturnDtos);
+
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             }
         }
-    } // 필터링 try문 작성하면 해결
+    }
 
     // 앨범 상세 조회
     @GetMapping("/user/albums/{album_id}")
