@@ -9,6 +9,7 @@ import com.swuProject.secound.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +65,13 @@ public class ArticleService {
             return null;
         }
 
+        // Check if the authenticated user is the author of the article
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!target.getMember().getUsername().equals(userDetails.getUsername())) {
+            log.info("권한이 없습니다. id: {}, article: {}", id, article.toString());
+            return null;
+        }
+
         target.patch(article);
         Article updated = articleRepository.save(target);
         return updated;
@@ -73,6 +81,13 @@ public class ArticleService {
         Article target = articleRepository.findById(id).orElse(null);
 
         if (target == null) {
+            return null;
+        }
+
+        // Check if the authenticated user is the author of the article
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!target.getMember().getUsername().equals(userDetails.getUsername())) {
+            log.info("권한이 없습니다. id: {}", id);
             return null;
         }
 
