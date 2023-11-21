@@ -10,4 +10,6 @@ import java.util.List;
 public interface ArticleRepository extends CrudRepository<Article, Long> {
 
     List<Article> findAllByOrderByRegTimeDesc();
+
+    List<Article> findByTitleContainingOrContentContainingOrderByRegTimeDesc(String searchTerm, String searchTerm1);
 }

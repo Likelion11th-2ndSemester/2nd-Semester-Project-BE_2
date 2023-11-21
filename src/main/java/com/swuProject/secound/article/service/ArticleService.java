@@ -31,6 +31,12 @@ public class ArticleService {
         return articleRepository.findAllByOrderByRegTimeDesc();
     }
 
+    public List<Article> searchPosts(String searchTerm) {
+        // Assuming you have a method in your repository to search articles based on a term
+        // Adjust the method name accordingly based on your actual repository
+        return articleRepository.findByTitleContainingOrContentContainingOrderByRegTimeDesc(searchTerm, searchTerm);
+    }
+
     public Article show(Long id) {
         return articleRepository.findById(id).orElse(null);
     }

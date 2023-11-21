@@ -25,6 +25,11 @@ public class ArticleApiController {
         return articleService.index();
     }
 
+    @GetMapping("/articles/search")
+    public List<Article> searchPosts(@RequestParam(name = "searchTerm") String searchTerm) {
+        return articleService.searchPosts(searchTerm);
+    }
+
     @GetMapping("/articles/{id}")
     public ResponseEntity<ArticleDetails> show(@PathVariable Long id) {
 
