@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 *.properties
+
+### 이미지
+photoImage/

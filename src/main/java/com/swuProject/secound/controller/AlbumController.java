@@ -12,10 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @RestController
 public class AlbumController {
@@ -26,9 +25,8 @@ public class AlbumController {
     private AlbumRepository albumRepository;
 
     // 앨범 생성
-    @ResponseBody
     @PostMapping("/user/albums")
-    public ResponseEntity createAlbum(@RequestBody AlbumFormDto albumFormDto, Principal principal) {
+    public ResponseEntity createAlbum(@Valid @RequestBody AlbumFormDto albumFormDto, Principal principal) {
         try {
             String email = principal.getName();
 
@@ -46,7 +44,7 @@ public class AlbumController {
     // 앨범 수정
     @PutMapping("/user/albums/{album_id}")
     public ResponseEntity updateAlbum(@PathVariable Long album_id,
-                                                         @RequestBody AlbumFormDto albumFormDto) {
+                                                         @Valid @RequestBody AlbumFormDto albumFormDto) {
         try {
             Long updated_id = albumService.updateAlbum(album_id, albumFormDto);
             Album updated = albumRepository.findById(updated_id).orElseThrow(EntityNotFoundException::new);

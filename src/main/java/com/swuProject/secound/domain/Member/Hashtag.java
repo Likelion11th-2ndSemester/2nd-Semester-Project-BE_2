@@ -28,6 +28,11 @@ public class Hashtag { // 친구 태그
     @JoinColumn(name="photo_id")
     private Photo photo;
 
+    public Hashtag(Member member, Photo photo) {
+        this.member = member;
+        this.photo = photo;
+    }
+
     // 유저 네임 반환 메소드 - 사진 상세 조회에서 태그된 유저 이름 출력 위해
 
 }

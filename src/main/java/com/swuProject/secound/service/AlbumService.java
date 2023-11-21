@@ -33,17 +33,18 @@ public class AlbumService {
 
     // 앨범 생성
     public Long createAlbum(AlbumFormDto albumFormDto, String email) {
+        // 앨범 등록
         Album album = albumFormDto.createAlbum();
+
+        // 앨범 생성자 할당
+        Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+        album.setMember(member);
 
         // id는 DB가 자동 생성 하므로 사용자에게 입력 받을 필요가 없다.
         // 입력이 들어온 경우(= null이 아닌경우) null 반환
         if (album.getId() != null) {
             return null;
         }
-
-        // 앨범 생성자 할당
-        Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
-        album.setMember(member);
 
         albumRepository.save(album);
         return album.getId();
