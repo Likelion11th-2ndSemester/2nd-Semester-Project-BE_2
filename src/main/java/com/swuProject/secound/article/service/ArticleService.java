@@ -28,7 +28,7 @@ public class ArticleService {
     private CommentRepository commentRepository;
 
     public List<Article> index() {
-        return articleRepository.findAll();
+        return articleRepository.findAllByOrderByRegTimeDesc();
     }
 
     public Article show(Long id) {
