@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 public class AlbumFormDto { // 앨범 생성, 앨범 수정
 
-    private Long album_id; // 자동 생성
+    private Long id; // 자동 생성
     private String albumName;
     private String color;
 

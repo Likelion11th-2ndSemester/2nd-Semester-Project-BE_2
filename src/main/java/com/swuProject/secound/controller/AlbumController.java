@@ -1,32 +1,38 @@
 package com.swuProject.secound.controller;
 
-import Album;
 import com.swuProject.secound.domain.Photo.Album;
 import com.swuProject.secound.dto.request.AlbumFormDto;
 import com.swuProject.secound.dto.response.AlbumAllReturnDto;
 import com.swuProject.secound.dto.response.AlbumReturnDto;
 import com.swuProject.secound.repository.AlbumRepository;
 import com.swuProject.secound.service.AlbumService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
 public class AlbumController {
 
+    @Autowired
     private AlbumService albumService;
+    @Autowired
     private AlbumRepository albumRepository;
 
     // 앨범 생성
     @ResponseBody
     @PostMapping("/user/albums")
-    public ResponseEntity createAlbum(@RequestBody AlbumFormDto albumFormDto) {
+    public ResponseEntity createAlbum(@RequestBody AlbumFormDto albumFormDto, Principal principal) {
         try {
-            Long id = albumService.createAlbum(albumFormDto); // 앨범 생성
+            String email = principal.getName();
+
+            Long id = albumService.createAlbum(albumFormDto, email); // 앨범 생성
             Album album = albumRepository.findById(id).orElseThrow(EntityNotFoundException::new); // 앨범 엔티티 조회
 
             AlbumAllReturnDto albumAllReturnDto = AlbumAllReturnDto.AlbumMapper(album); // DTO로 변환
@@ -42,9 +48,9 @@ public class AlbumController {
     public ResponseEntity updateAlbum(@PathVariable Long album_id,
                                                          @RequestBody AlbumFormDto albumFormDto) {
         try {
-            Album album = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new); // 앨범 엔티티 조회
-            albumService.updateAlbum(album_id, albumFormDto);
-            AlbumAllReturnDto albumAllReturnDto = AlbumAllReturnDto.AlbumMapper(album);
+            Long updated_id = albumService.updateAlbum(album_id, albumFormDto);
+            Album updated = albumRepository.findById(updated_id).orElseThrow(EntityNotFoundException::new);
+            AlbumAllReturnDto albumAllReturnDto = AlbumAllReturnDto.AlbumMapper(updated);
             return ResponseEntity.ok(albumAllReturnDto);
 
         } catch (Exception e) {
@@ -71,16 +77,15 @@ public class AlbumController {
     public ResponseEntity albumList(@RequestParam(value = "username", required = false)
                                                                  String username) {
         // 검색어가 있는 경우
-
         if (username != null) {
             try {
                 List<AlbumAllReturnDto> albumAllReturnDtos = albumService.getAlbumListWithHashtag(username);
                 return ResponseEntity.ok(albumAllReturnDtos);
-
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             }
-        } else { // 앨범 전체 조회
+        // 검색어가 없는 경우
+        } else {
             try {
                 List<AlbumAllReturnDto> albumAllReturnDtos = albumService.getAlbumList();
                 return ResponseEntity.ok(albumAllReturnDtos);

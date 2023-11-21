@@ -8,7 +8,7 @@ import org.modelmapper.ModelMapper;
 @Getter @Setter
 public class AlbumAllReturnDto { // 앨범 전체 조회, 앨범 생성, 앨범 수정, 앨범 전체 조회 - 친구 검색
 
-    private Long album_id;
+    private Long id; // 앨범 식별자
     private String albumName;
     private String color;
 

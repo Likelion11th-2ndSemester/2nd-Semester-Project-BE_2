@@ -1,6 +1,7 @@
 package com.swuProject.secound.service;
 
 
+import com.swuProject.secound.domain.Member.Member;
 import com.swuProject.secound.domain.Photo.Album;
 import com.swuProject.secound.domain.Photo.Photo;
 import com.swuProject.secound.dto.request.AlbumFormDto;
@@ -9,15 +10,13 @@ import com.swuProject.secound.dto.response.AlbumReturnDto;
 import com.swuProject.secound.repository.AlbumRepository;
 import com.swuProject.secound.repository.HashtagRepositoryCustom;
 import com.swuProject.secound.repository.HashtagRepositoryCustomImpl;
+import com.swuProject.secound.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -27,10 +26,13 @@ public class AlbumService {
     private AlbumRepository albumRepository;
 
     @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
     private HashtagRepositoryCustomImpl hashtagRepositoryCustomImpl;
 
     // 앨범 생성
-    public Long createAlbum(AlbumFormDto albumFormDto) {
+    public Long createAlbum(AlbumFormDto albumFormDto, String email) {
         Album album = albumFormDto.createAlbum();
 
         // id는 DB가 자동 생성 하므로 사용자에게 입력 받을 필요가 없다.
@@ -39,21 +41,32 @@ public class AlbumService {
             return null;
         }
 
+        // 앨범 생성자 할당
+        Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+        album.setMember(member);
+
         albumRepository.save(album);
         return album.getId();
     }
 
     // 앨범 수정
     public Long updateAlbum(Long album_id, AlbumFormDto albumFormDto) {
-        Album album = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new);
+        // DTO -> 엔티티 변환
+        Album album = albumFormDto.createAlbum();
+
+        // 조회한 앨범이 존재하는지 확인
+        Album target = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new);
 
         // 대상 엔티티가 없거나 url로 요청한 id와 바디로 담긴 수정하려는 게시글의 id가 다를 경우 처리
-        if (album == null || album_id != album.getId()) {
+        if (target == null || album_id != album.getId()) {
             return null;
         }
 
-        album.updateAlbum(albumFormDto);
-        return album.getId();
+        // 앨범 수정
+        target.updateAlbum(album);
+        Album updated = albumRepository.save(target);
+
+        return updated.getId();
     }
 
     // 앨범 삭제
