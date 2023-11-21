@@ -1,20 +1,18 @@
 package com.swuProject.secound.domain.Photo;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
 public class Image {
+
     @Id
     @Column(name="img_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     private String imgName;
@@ -22,7 +20,7 @@ public class Image {
     private String imgPath;
     private String repImg;
 
-    public void updateImage(String originalImgName, String imgName, String imgPath) {
+    public void updateImg(String originalImgName, String imgName, String imgPath) {
         this.originalImgName = originalImgName;
         this.imgName = imgName;
         this.imgPath = imgPath;

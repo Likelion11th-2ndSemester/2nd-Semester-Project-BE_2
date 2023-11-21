@@ -3,6 +3,8 @@ package com.swuProject.secound.service;
 import com.swuProject.secound.domain.Photo.Image;
 import com.swuProject.secound.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -13,47 +15,50 @@ import javax.persistence.EntityNotFoundException;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class ImageService {
 
-    private final FileService fileService;
+    @Value("${photoImageLocation}")
+    private String photoImageLocation;
+
     private final ImageRepository imageRepository;
+    private final FileService fileService;
 
-    private String imageLocation;
-
-    // 사진 이미지 저장
-    public void saveImage(Image image, MultipartFile imgFile) throws Exception {
-        String originalImgName = imgFile.getOriginalFilename();
+    // 상품 이미지 저장
+    public void saveImg(Image image, MultipartFile imageFile) throws Exception {
+        String originalImgName = imageFile.getOriginalFilename();
         String imgName = "";
         String imgPath = "";
 
         // 파일 업로드
         if (!StringUtils.isEmpty(originalImgName)) {
-            imgName = fileService.uploadFile(imageLocation, originalImgName, imgFile.getBytes());
+            imgName = fileService.uploadFile(photoImageLocation, originalImgName, imageFile.getBytes());
             imgPath = "/images/photo/" + imgName;
         }
 
-        // 사진 이미지 정보 저장
-        image.updateImage(originalImgName, imgName, imgPath);
+        // 상품 이미지 정보 저장
+        image.updateImg(originalImgName, imgName, imgPath);
         imageRepository.save(image);
     }
 
-    // 사진 이미지 수정
-    public void updateImage(Long imgId, MultipartFile imgFile) throws Exception {
+    // 아이템 이미지 수정
+    public void updateItemImg(Long imageId, MultipartFile imgFile) throws Exception {
         if (!imgFile.isEmpty()) {
-            // 사진 id를 통해 이미지 조회한 후 savedImage 변수에 저장
-            Image savedImage = imageRepository.findById(imgId).orElseThrow(EntityNotFoundException::new);
+            // 상품 id를 통해 상품 이미지 조회한 후 itemImg 변수에 저장
+            Image savedImg = imageRepository.findById(imageId).orElseThrow(EntityNotFoundException::new);
 
-            // 기존 등록된 사진 이미지가 있는 경우 삭제
-            if (!StringUtils.isEmpty(savedImage.getOriginalImgName())) {
-                fileService.deleteFile(savedImage.getImgPath());
+            // 기존 등록된 상품 이미지가 있는 경우 삭제
+            if (!StringUtils.isEmpty(savedImg.getOriginalImgName())) {
+                fileService.deleteFile(savedImg.getImgPath());
             }
 
-            // 수정하고자 하는 이미지 정보 세팅 (업데이트)
-            String originalImgName = savedImage.getOriginalImgName();
-            String imgName = fileService.uploadFile(imageLocation, originalImgName, imgFile.getBytes());
+            // 수정하고자 하는 상품 이미지 정보 세팅(업데이트)
+            String originalImgName = savedImg.getOriginalImgName();
+            String imgName = fileService.uploadFile(photoImageLocation, originalImgName, imgFile.getBytes());
             String imgPath = "/images/photo/" + imgName;
 
-            savedImage.updateImage(originalImgName, imgName, imgPath);
+            savedImg.updateImg(originalImgName, imgName, imgPath);
         }
     }
+
 }

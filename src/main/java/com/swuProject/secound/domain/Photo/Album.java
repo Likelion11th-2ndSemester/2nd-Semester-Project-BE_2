@@ -34,12 +34,12 @@ public class Album {
     @OneToMany(mappedBy = "album")
     List<Photo> photoList = new ArrayList<>();
 
-    public Album(long id, String albumName, String color) {
+    // 앨범 수정 (부분 수정도 가능)
+    public void updateAlbum(Album album) {
+        if (album.albumName != null)
+            this.albumName = album.albumName;
+        if (album.color != null)
+            this.color = album.color;
     }
 
-    // 앨범 수정
-    public void updateAlbum(AlbumFormDto albumFormDto) {
-        this.albumName = albumFormDto.getAlbumName();
-        this.color = albumFormDto.getColor();
-    }
 }

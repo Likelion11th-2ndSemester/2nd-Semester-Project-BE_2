@@ -1,5 +1,7 @@
-package com.swuProject.secound.security;
+package com.swuProject.secound.config;
 
+import com.swuProject.secound.security.JwtAuthenticationFilter;
+import com.swuProject.secound.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

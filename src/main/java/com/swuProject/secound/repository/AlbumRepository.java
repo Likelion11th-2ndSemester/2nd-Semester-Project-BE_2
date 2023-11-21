@@ -1,6 +1,6 @@
 package com.swuProject.secound.repository;
 
-import Album;
+import com.swuProject.secound.domain.Photo.Album;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

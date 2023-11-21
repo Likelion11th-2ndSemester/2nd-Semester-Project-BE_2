@@ -1,6 +1,6 @@
 package com.swuProject.secound.dto.response;
 
-import Album;
+import com.swuProject.secound.domain.Photo.Album;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -11,10 +11,10 @@ import java.util.List;
 @Getter @Setter
 public class AlbumReturnDto { // 앨범 상세 조회, 앨범 상세 조회 - 친구 검색
 
-    private Long album_id;
+    private Long id; // 앨범 식별자
     private String albumName;
     private String color;
-    private List<PhotoDto> photoDtoList = new ArrayList<>();
+    private List<PhotoDto> photoList = new ArrayList<>();
 
     private static ModelMapper modelMapper = new ModelMapper();
 

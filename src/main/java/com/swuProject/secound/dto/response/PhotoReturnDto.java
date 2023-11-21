@@ -1,9 +1,12 @@
 package com.swuProject.secound.dto.response;
 
+import com.swuProject.secound.domain.Member.Hashtag;
 import com.swuProject.secound.domain.Photo.Photo;
+import com.swuProject.secound.repository.HashtagRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,6 @@ public class PhotoReturnDto { // 사진 상세 조회, 사진 등록, 사진 수
     private String content;
     private Boolean anonymous;
     private Integer numberOfPeople;
-    private List<Long> hashtagList = new ArrayList<>();
     private String username;
 
     private static ModelMapper modelMapper = new ModelMapper();
@@ -27,6 +29,18 @@ public class PhotoReturnDto { // 사진 상세 조회, 사진 등록, 사진 수
     // 엔티티 -> DTO 변환
     public static PhotoReturnDto PhotoMapper(Photo photo) {
 
-        return modelMapper.map(photo, PhotoReturnDto.class);
+        PhotoReturnDto photoReturnDto = new PhotoReturnDto();
+
+        photoReturnDto.setPhoto_id(photo.getId());
+        photoReturnDto.setImage_id(photo.getImageId());
+        photoReturnDto.setFilmingDate(photo.getFilmingDate().toString());
+        photoReturnDto.setAlbum_id(photo.getAlbumId());
+        //photoReturnDto.setStudio_id(photo.getStudioId());
+        photoReturnDto.setContent(photo.getContent());
+        photoReturnDto.setAnonymous(photo.getAnonymous());
+        photoReturnDto.setNumberOfPeople(photo.getNumberOfPeople());
+        photoReturnDto.setUsername(photo.getUsername());
+
+        return photoReturnDto;
     }
 }
