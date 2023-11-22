@@ -5,6 +5,7 @@ import com.swuProject.secound.domain.Photo.Photo;
 import com.swuProject.secound.dto.request.ImageFormDto;
 import com.swuProject.secound.dto.request.PhotoFormDto;
 import com.swuProject.secound.dto.request.PhotoUpdateDto;
+import com.swuProject.secound.dto.response.AlbumReturnDto;
 import com.swuProject.secound.dto.response.PhotoCalendarDto;
 import com.swuProject.secound.dto.response.PhotoPublicDto;
 import com.swuProject.secound.dto.response.PhotoReturnDto;
@@ -149,4 +150,44 @@ public class PhotoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());}
     }
+
+    // 태그된 친구명을 가진 사진 전체 조회
+    @GetMapping("/user/{album_id}/photos")
+    public ResponseEntity getTaggedPhotoList(@PathVariable Long album_id,
+                                             @RequestParam(value="username") String username) {
+        try {
+            AlbumReturnDto albumReturnDto = photoService.getTaggedPhotoList(album_id, username);
+            return ResponseEntity.ok(albumReturnDto);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    // 포즈 추천 페이지 - 인원 수 필터링
+    @GetMapping("/user/public/photos")
+    public ResponseEntity photoPublicFiltered(@RequestParam(value = "numberOfPeople") Integer numberOfPeople,
+                                               Principal principal) {
+        try {
+            String email = principal.getName();
+            List<PhotoPublicDto> photoPublicDtoList = photoService.getPhotoPublicFiltered(email, numberOfPeople);
+
+            return ResponseEntity.ok(photoPublicDtoList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    // 스크랩한 사진 전체 조회
+    @GetMapping("/user/photos/scrap")
+    public ResponseEntity photoScrapped(Principal principal) {
+        try {
+            String email = principal.getName();
+            List<PhotoPublicDto> photoPublicDtoList = photoService.getPhotoScrapped(email);
+            return ResponseEntity.ok(photoPublicDtoList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }

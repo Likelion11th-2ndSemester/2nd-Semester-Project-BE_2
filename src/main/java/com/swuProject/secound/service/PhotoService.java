@@ -13,6 +13,7 @@ import com.swuProject.secound.dto.response.*;
 import com.swuProject.secound.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -163,7 +165,7 @@ public class PhotoService {
         return photoCalendarDto;
     }
 
-
+    // 공개된 사진 전체 조회 - 포즈 추천 페이지
     public List<PhotoPublicDto> getPhotoPublic(String email) {
 
         Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
@@ -185,6 +187,30 @@ public class PhotoService {
         return photoPublicDtoList;
     }
 
+    // 공개된 사진 인원 수 필터링 - 포즈 추천 페이지
+    public List<PhotoPublicDto> getPhotoPublicFiltered(String email, Integer numberOfPeople) {
+
+        Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+        List<Photo> photoPublicList = photoRepository.findByAnonymousIsTrue();
+        List<PhotoPublicDto> photoPublicDtoList = new ArrayList<>();
+
+        for (Photo photo : photoPublicList) {
+            if (photo.getNumberOfPeople().equals(numberOfPeople)) { // 인원 수 필터링
+                Scrap scrap = scrapRepository.findByMemberAndPhoto(member, photo);
+
+                if (scrap != null) { // 스크랩한 사진이라면
+                    PhotoPublicDto photoPublicDto = PhotoPublicDto.PhotoMapper(photo, true);
+                    photoPublicDtoList.add(photoPublicDto);
+                } else { // 스크랩한 사진이 아니라면
+                    PhotoPublicDto photoPublicDto = PhotoPublicDto.PhotoMapper(photo, false);
+                    photoPublicDtoList.add(photoPublicDto);
+                }
+            }
+        }
+
+        return photoPublicDtoList;
+    }
+
     // 스크랩 / 스크랩 취소
     public void scrapStatus(String email, Photo photo) {
         Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
@@ -196,5 +222,51 @@ public class PhotoService {
             Scrap scrap= new Scrap(member, photo);
             scrapRepository.save(scrap);
         }
+    }
+
+    // 태그된 친구명을 가진 사진 전체 조회
+    public AlbumReturnDto getTaggedPhotoList(Long album_id, String username) {
+        Album album = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new);
+        Member member = memberRepository.findByName(username);
+
+        List<Photo> allPhotoList = album.getPhotoList();
+        List<Photo> taggedPhotoList = new ArrayList<>();
+        List<PhotoDto> photoDtoList = new ArrayList<>();
+
+        // 검색한 사용자가 태그된 사진만 조회
+        for (Photo photo : allPhotoList) {
+            // 사진의 해시태그 리스트에 조회한 사용자가 존재한다면
+            if (photo.getHashtagList().stream()
+                    .map(Hashtag::getMember)
+                    .anyMatch(member::equals)) {
+
+                taggedPhotoList.add(photo);
+            }
+        }
+
+        // photo 엔티티 -> photoDto 변환
+        for (Photo photo : taggedPhotoList) {
+            PhotoDto photoDto = PhotoDto.photoDtoMapper(photo);
+            photoDtoList.add(photoDto);
+        }
+
+        AlbumReturnDto albumReturnDto = AlbumReturnDto.AlbumMapper(album, photoDtoList);
+        return albumReturnDto;
+    }
+
+    // 스크랩한 사진 전체 조회
+    public List<PhotoPublicDto> getPhotoScrapped(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+        List<Scrap> scrapList = scrapRepository.findByMember(member);
+        List<Photo> scrappedPhotoList = scrapList.stream().map(Scrap::getPhoto).collect(Collectors.toList());
+
+        List<PhotoPublicDto> photoPublicDtoList = new ArrayList<>();
+
+        for (Photo photo : scrappedPhotoList) {
+            PhotoPublicDto photoPublicDto = PhotoPublicDto.PhotoMapper(photo, true);
+            photoPublicDtoList.add(photoPublicDto);
+        }
+
+        return photoPublicDtoList;
     }
 }
