@@ -42,13 +42,13 @@ public class ImageService {
     }
 
     // 아이템 이미지 수정
-    public void updateItemImg(Long imageId, MultipartFile imgFile) throws Exception {
+    public void updateImg(Long imageId, MultipartFile imgFile) throws Exception {
         if (!imgFile.isEmpty()) {
             // 상품 id를 통해 상품 이미지 조회한 후 itemImg 변수에 저장
             Image savedImg = imageRepository.findById(imageId).orElseThrow(EntityNotFoundException::new);
 
             // 기존 등록된 상품 이미지가 있는 경우 삭제
-            if (!StringUtils.isEmpty(savedImg.getOriginalImgName())) {
+            if (!StringUtils.isEmpty(savedImg.getImgName())) {
                 fileService.deleteFile(savedImg.getImgPath());
             }
 

@@ -7,6 +7,7 @@ import com.swuProject.secound.domain.Photo.Photo;
 import com.swuProject.secound.dto.request.AlbumFormDto;
 import com.swuProject.secound.dto.response.AlbumAllReturnDto;
 import com.swuProject.secound.dto.response.AlbumReturnDto;
+import com.swuProject.secound.dto.response.PhotoDto;
 import com.swuProject.secound.repository.AlbumRepository;
 import com.swuProject.secound.repository.HashtagRepositoryCustom;
 import com.swuProject.secound.repository.HashtagRepositoryCustomImpl;
@@ -129,7 +130,15 @@ public class AlbumService {
     @Transactional(readOnly = true)
     public AlbumReturnDto getAlbumDetail(Long album_id) {
         Album album = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new);
-        AlbumReturnDto albumReturnDto = AlbumReturnDto.AlbumMapper(album);
+        List<Photo> photoList = album.getPhotoList();
+        List<PhotoDto> photoDtoList = new ArrayList<>();
+
+        for (Photo photo : photoList) {
+            PhotoDto photoDto = PhotoDto.photoDtoMapper(photo);
+            photoDtoList.add(photoDto);
+        }
+
+        AlbumReturnDto albumReturnDto = AlbumReturnDto.AlbumMapper(album, photoDtoList);
 
         return albumReturnDto;
     }
