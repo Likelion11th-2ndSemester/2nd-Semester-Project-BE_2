@@ -38,4 +38,4 @@ out/
 *.properties
 
 ### 이미지
-photoImage/
+photoImage/*

@@ -11,17 +11,19 @@ import java.util.List;
 @Getter @Setter
 public class PhotoCalendarDto { // 사진 전체 조회 - 달력
 
-    private Integer year;
-    private Integer month;
-    private Integer date;
+    private String filmingDate;
 
-    private List<PhotoDto> photoDtoList = new ArrayList<>();
+    private List<PhotoDto> photoList = new ArrayList<>();
 
     private static ModelMapper modelMapper = new ModelMapper();
 
     // 엔티티 -> DTO 변환
-    public static PhotoCalendarDto PhotoMapper(Photo photo) {
+    public static PhotoCalendarDto PhotoMapper(String filmingDate, List<PhotoDto> photoDtoList) {
 
-        return modelMapper.map(photo, PhotoCalendarDto.class);
+        PhotoCalendarDto photoCalendarDto = new PhotoCalendarDto();
+        photoCalendarDto.setFilmingDate(filmingDate);
+        photoCalendarDto.setPhotoList(photoDtoList);
+
+        return photoCalendarDto;
     }
 }

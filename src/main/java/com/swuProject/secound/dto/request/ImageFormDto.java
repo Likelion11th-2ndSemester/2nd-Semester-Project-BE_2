@@ -12,12 +12,11 @@ public class ImageFormDto {
     private String imgName;
     private String originalImgName;
     private String imgPath;
-    private String repImg;
 
     private static ModelMapper modelMapper = new ModelMapper();
 
     // DTO -> 엔티티 변환
-    public static ImageFormDto ImageFormDto(Image image) {
+    public static ImageFormDto ImageMapper(Image image) {
 
         return modelMapper.map(image, ImageFormDto.class);
     }

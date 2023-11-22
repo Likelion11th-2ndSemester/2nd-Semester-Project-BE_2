@@ -31,7 +31,7 @@ public class Album {
     private Member member;
 
     // 일대다 양방향 - 사진
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<Photo> photoList = new ArrayList<>();
 
     // 앨범 수정 (부분 수정도 가능)
