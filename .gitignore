@@ -35,8 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
-*.properties
-!gradle-wrapper.properties
+
 
 ### 이미지
 photoImage/
+src/main/resources/application-test.properties
