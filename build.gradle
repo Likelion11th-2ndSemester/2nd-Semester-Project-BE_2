@@ -40,6 +40,8 @@ dependencies {
 
 	// ModelMapper 의존성 추가
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
+
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
 }
 
 tasks.named('test') {
