@@ -1,4 +1,5 @@
 package com.swuProject.secound.domain.Member;
+import com.swuProject.secound.domain.Photo.Scrap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

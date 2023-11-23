@@ -35,8 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
-
+src/main/resources/application-test.properties
 
 ### 이미지
-photoImage/
-src/main/resources/application-test.properties
+photoImage/*
+
+

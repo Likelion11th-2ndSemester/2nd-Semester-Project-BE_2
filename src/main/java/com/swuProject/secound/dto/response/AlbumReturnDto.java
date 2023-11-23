@@ -19,8 +19,11 @@ public class AlbumReturnDto { // 앨범 상세 조회, 앨범 상세 조회 - �
     private static ModelMapper modelMapper = new ModelMapper();
 
     // 엔티티 -> DTO 변환
-    public static AlbumReturnDto AlbumMapper(Album album) {
+    public static AlbumReturnDto AlbumMapper(Album album, List<PhotoDto> photoDtoList) {
 
-        return modelMapper.map(album, AlbumReturnDto.class);
+        AlbumReturnDto albumReturnDto = modelMapper.map(album, AlbumReturnDto.class);
+        albumReturnDto.setPhotoList(photoDtoList);
+
+        return albumReturnDto;
     }
 }

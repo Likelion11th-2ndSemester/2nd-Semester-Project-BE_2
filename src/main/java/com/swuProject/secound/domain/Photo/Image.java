@@ -18,7 +18,6 @@ public class Image {
     private String imgName;
     private String originalImgName;
     private String imgPath;
-    private String repImg;
 
     public void updateImg(String originalImgName, String imgName, String imgPath) {
         this.originalImgName = originalImgName;
