@@ -52,8 +52,8 @@ public class PhotoService {
             Album album = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new);
 
             // 사진관 매핑
-//            Long studio_id = photoFormDto.getStudio_id();
-//            Studio studio = studioRepository.findById(studio_id).orElseThrow(EntityNotFoundException::new);
+            Long studio_id = photoFormDto.getStudio_id();
+            Studio studio = studioRepository.findById(studio_id).orElseThrow(EntityNotFoundException::new);
 
             // 해시태그 매핑
             List<Long> hashtageList = photoFormDto.getTaggedUserList();
@@ -79,7 +79,7 @@ public class PhotoService {
             Image image = new Image();
 
             // 연관관계 세팅
-            photo.setNewMapping(member, album, null, image);
+            photo.setNewMapping(member, album, studio, image);
             photoRepository.save(photo);
 
             // 이미지 저장
@@ -101,11 +101,7 @@ public class PhotoService {
             // 조회한 사진이 존재하는지 확인
             Photo target = photoRepository.findById(photo_id).orElseThrow(EntityNotFoundException::new);
 
-            // 대상 엔티티가 없거나 url로 요청한 id와 바디로 담긴 수정하려는 게시글의 id가 다를 경우 처리
-            if (target == null || photo_id != photo.getId()) {
-                return null;
-            }
-
+            // 사진 수정 (연관관계 필드 제외)
             target.updatePhoto(photo);
 
             // 앨범 찾기
@@ -113,11 +109,31 @@ public class PhotoService {
             Album album = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new);
 
             // 사진관 매핑
-             Long studio_id = photoUpdateDto.getStudio_id();
-             Studio studio = studioRepository.findById(studio_id).orElseThrow(EntityNotFoundException::new);
+            Long studio_id = photoUpdateDto.getStudio_id();
+            Studio studio = studioRepository.findById(studio_id).orElseThrow(EntityNotFoundException::new);
 
             // 연관관계 수정 세팅
             target.setUpdateMapping(album, studio);
+
+            // 해시태그 수정
+            // 기존 해시태그 객체 삭제
+            List<Hashtag> hashtagList = hashtagRepository.findByPhotoId(photo_id);
+            for (Hashtag hashtag : hashtagList) {
+                hashtagRepository.delete(hashtag);
+            }
+
+            // 수정폼으로 입력받은 해시태그 유저 리스트
+            List<Long> newHashtagMemberList = photoUpdateDto.getTaggedUserList();
+
+            // 태그된 유저 아이디 루프 돌며 해당 아이디의 유저 조회 후 연관된 해시태그 객체 생성
+            for (Long memberId : newHashtagMemberList) {
+
+                // 새로운 해시태그 객체 생성
+                Member hashtagMember = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
+                Hashtag newHashtag = new Hashtag(hashtagMember, photo);
+                hashtagRepository.save(newHashtag);
+            }
+
 
             // 이미지 수정
             Long image_id = photoUpdateDto.getImage_id();
@@ -191,20 +207,19 @@ public class PhotoService {
     public List<PhotoPublicDto> getPhotoPublicFiltered(String email, Integer numberOfPeople) {
 
         Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
-        List<Photo> photoPublicList = photoRepository.findByAnonymousIsTrue();
+        List<Photo> photoPublicList = photoRepository.findByAnonymousIsTrueAndNumberOfPeople(numberOfPeople);
         List<PhotoPublicDto> photoPublicDtoList = new ArrayList<>();
 
         for (Photo photo : photoPublicList) {
-            if (photo.getNumberOfPeople().equals(numberOfPeople)) { // 인원 수 필터링
-                Scrap scrap = scrapRepository.findByMemberAndPhoto(member, photo);
 
-                if (scrap != null) { // 스크랩한 사진이라면
-                    PhotoPublicDto photoPublicDto = PhotoPublicDto.PhotoMapper(photo, true);
-                    photoPublicDtoList.add(photoPublicDto);
-                } else { // 스크랩한 사진이 아니라면
-                    PhotoPublicDto photoPublicDto = PhotoPublicDto.PhotoMapper(photo, false);
-                    photoPublicDtoList.add(photoPublicDto);
-                }
+            Scrap scrap = scrapRepository.findByMemberAndPhoto(member, photo);
+
+            if (scrap != null) { // 스크랩한 사진이라면
+                PhotoPublicDto photoPublicDto = PhotoPublicDto.PhotoMapper(photo, true);
+                photoPublicDtoList.add(photoPublicDto);
+            } else { // 스크랩한 사진이 아니라면
+                PhotoPublicDto photoPublicDto = PhotoPublicDto.PhotoMapper(photo, false);
+                photoPublicDtoList.add(photoPublicDto);
             }
         }
 

@@ -16,5 +16,8 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     // 공개된 사진 조회
     List<Photo> findByAnonymousIsTrue();
 
+    // 공개된 사진 중 인원 수 필터링
+    List<Photo> findByAnonymousIsTrueAndNumberOfPeople(Integer numberOfPeople);
+
     // 특정 앨범에
 }

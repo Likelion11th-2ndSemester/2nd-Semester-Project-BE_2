@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Getter @Setter
 public class Scrap { // 공개된 사진만 스크랩 가능
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "scrap_id")
     private Long id;
 

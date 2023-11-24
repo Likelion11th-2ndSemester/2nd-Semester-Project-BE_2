@@ -34,7 +34,7 @@ public class PhotoReturnDto { // 사진 상세 조회, 사진 등록, 사진 수
         photoReturnDto.setPhoto_id(photo.getId());
         photoReturnDto.setFilmingDate(photo.getFilmingDate().toString());
         photoReturnDto.setAlbum_id(photo.getAlbumId());
-        //photoReturnDto.setStudio_id(photo.getStudioId());
+        photoReturnDto.setStudio_id(photo.getStudioId());
         photoReturnDto.setContent(photo.getContent());
         photoReturnDto.setAnonymous(photo.getAnonymous());
         photoReturnDto.setNumberOfPeople(photo.getNumberOfPeople());
