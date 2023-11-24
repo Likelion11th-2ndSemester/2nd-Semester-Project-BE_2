@@ -5,7 +5,7 @@ import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.article.repository.ArticleRepository;
 import com.swuProject.secound.comment.dto.CommentDto;
 import com.swuProject.secound.comment.repository.CommentRepository;
-import com.swuProject.secound.domain.Member;
+import com.swuProject.secound.domain.Member.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
