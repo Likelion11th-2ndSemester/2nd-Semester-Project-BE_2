@@ -35,7 +35,7 @@ public class PhotoUpdateDto { // 사진 수정
     private Boolean anonymous; // 익명 여부
     private Integer numberOfPeople; // 인원수
 
-    private List<Long> hashtageList = new ArrayList<>(); // 친구 해시태그
+    private List<Long> taggedUserList = new ArrayList<>(); // 친구 해시태그
 
     private static ModelMapper modelMapper = new ModelMapper();
 

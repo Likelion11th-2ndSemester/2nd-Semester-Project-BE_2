@@ -46,7 +46,12 @@ public class PhotoController {
         try {
             Long id = photoService.createPhoto(photoFormDto, email, imgFile);
             Photo photo = photoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            Image image = photo.getImage();
+            ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
+
+            // 엔티티 -> DTO 변환
             PhotoReturnDto photoReturnDto = PhotoReturnDto.PhotoMapper(photo);
+            photoReturnDto.setImageFormDto(imageFormDto);
 
             return ResponseEntity.ok(photoReturnDto);
 
@@ -63,7 +68,12 @@ public class PhotoController {
         try {
             Long id = photoService.updatePhoto(photo_id, photoUpdateDto, imgFile);
             Photo photo = photoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            Image image = photo.getImage();
+            ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
+
+            // 엔티티 -> DTO 변환
             PhotoReturnDto photoReturnDto = PhotoReturnDto.PhotoMapper(photo);
+            photoReturnDto.setImageFormDto(imageFormDto);
 
             return ResponseEntity.ok(photoReturnDto);
         } catch (EntityNotFoundException e) {
