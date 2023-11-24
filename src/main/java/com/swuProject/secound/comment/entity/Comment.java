@@ -2,7 +2,7 @@ package com.swuProject.secound.comment.entity;
 
 import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.comment.dto.CommentDto;
-import com.swuProject.secound.domain.Member;
+import com.swuProject.secound.domain.Member.Member;
 import lombok.*;
 
 import javax.persistence.*;

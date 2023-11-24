@@ -2,7 +2,7 @@ package com.swuProject.secound.article.dto;
 
 import com.swuProject.secound.article.constant.Category;
 import com.swuProject.secound.article.entity.Article;
-import com.swuProject.secound.domain.Member;
+import com.swuProject.secound.domain.Member.Member;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 

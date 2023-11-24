@@ -1,7 +1,7 @@
 package com.swuProject.secound.comment.dto;
 
 import com.swuProject.secound.comment.entity.Comment;
-import com.swuProject.secound.domain.Member;
+import com.swuProject.secound.domain.Member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
