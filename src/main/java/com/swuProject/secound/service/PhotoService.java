@@ -46,8 +46,8 @@ public class PhotoService {
             // 사진관 매핑
 //            Long studio_id = photoFormDto.getStudio_id();
 //            Studio studio = studioRepository.findById(studio_id).orElseThrow(EntityNotFoundException::new);
-
             // 해시태그 객체 생성
+
             List<Long> hashtageList = photoFormDto.getTaggedUserList();
 
             // 태그된 유저 아이디 루프 돌며 해당 아이디의 유저 조회
