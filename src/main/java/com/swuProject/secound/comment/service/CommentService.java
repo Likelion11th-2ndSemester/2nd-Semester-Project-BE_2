@@ -5,7 +5,9 @@ import com.swuProject.secound.article.repository.ArticleRepository;
 import com.swuProject.secound.comment.dto.CommentDto;
 import com.swuProject.secound.comment.entity.Comment;
 import com.swuProject.secound.comment.repository.CommentRepository;
+import com.swuProject.secound.domain.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,10 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("댓글 생성 실패! 대상 게시글이 없습니다."));
 
         Comment comment = Comment.createComment(dto, article);
+
+        Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        comment.setMember(member);
+
         Comment created = commentRepository.save(comment);
         return CommentDto.createCommentDto(created);
     }

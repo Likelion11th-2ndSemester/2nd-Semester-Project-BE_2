@@ -1,4 +1,4 @@
-package com.swuProject.secound.article.api;
+package com.swuProject.secound.article.dto;
 
 import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.comment.dto.CommentDto;
