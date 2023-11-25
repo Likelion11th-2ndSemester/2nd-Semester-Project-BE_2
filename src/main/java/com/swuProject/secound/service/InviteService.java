@@ -15,8 +15,8 @@ public class InviteService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public Optional<Member> searchEmailOrNickname(String searchTerm) {
-        return memberRepository.findByEmailOrNickname(searchTerm, searchTerm);
+    public Optional<Member> searchEmail(String searchTerm) {
+        return memberRepository.findByEmail(searchTerm);
     }
 
     public void addFriend(Member member, Member friend) {

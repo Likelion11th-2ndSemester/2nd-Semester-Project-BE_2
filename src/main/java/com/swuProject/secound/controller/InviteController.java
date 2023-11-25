@@ -22,18 +22,18 @@ public class InviteController {
     private MemberRepository memberRepository;
 
     @GetMapping("/mypage")
-    public Optional<Member> searchEmailOrNickname(@RequestParam(name = "EmailOrNickname") String searchTerm) {
-        return inviteService.searchEmailOrNickname(searchTerm);
+    public Optional<Member> searchEmail(@RequestParam(name = "Email") String searchTerm) {
+        return inviteService.searchEmail(searchTerm);
     }
 
     @PostMapping("/mypage")
-    public ResponseEntity<String> addFriend(@RequestParam(name = "EmailOrNickname") String searchTerm) {
+    public ResponseEntity<String> addFriend(@RequestParam(name = "Email") String searchTerm) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
         Member currentUser = memberRepository.findByName(currentUsername);
 
         // Find the user to be friends with
-        Member friend = memberRepository.findByEmailOrNickname(searchTerm, searchTerm).orElse(null);
+        Member friend = memberRepository.findByEmail(searchTerm).orElse(null);
 
         if (currentUser != null && friend != null) {
             inviteService.addFriend(currentUser, friend);
@@ -44,13 +44,13 @@ public class InviteController {
     }
 
     @DeleteMapping("/mypage")
-    public ResponseEntity<String> removeFriend(@RequestParam(name = "EmailOrNickname") String searchTerm) {
+    public ResponseEntity<String> removeFriend(@RequestParam(name = "Email") String searchTerm) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
         Member currentUser = memberRepository.findByName(currentUsername);
 
         // Find the user to be removed as a friend
-        Member friend = memberRepository.findByEmailOrNickname(searchTerm, searchTerm).orElse(null);
+        Member friend = memberRepository.findByEmail(searchTerm).orElse(null);
 
         if (currentUser != null && friend != null) {
             inviteService.removeFriend(currentUser, friend);
