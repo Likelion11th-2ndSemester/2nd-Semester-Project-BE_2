@@ -15,7 +15,21 @@ public class InviteService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public List<Member> searchEmailOrNickname(String searchTerm) {
+    public Optional<Member> searchEmailOrNickname(String searchTerm) {
         return memberRepository.findByEmailOrNickname(searchTerm, searchTerm);
+    }
+
+    public void addFriend(Member member, Member friend) {
+        member.getFriends().add(friend);
+        friend.getFriends().add(member);
+        memberRepository.save(member);
+        memberRepository.save(friend);
+    }
+
+    public void removeFriend(Member member, Member friend) {
+        member.getFriends().remove(friend);
+        friend.getFriends().remove(member);
+        memberRepository.save(member);
+        memberRepository.save(friend);
     }
 }
