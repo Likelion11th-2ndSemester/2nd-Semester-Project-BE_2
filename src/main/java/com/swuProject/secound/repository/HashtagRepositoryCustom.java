@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface HashtagRepositoryCustom {
-    List<Photo> findPhotosByMemberUsername(String username);
+    List<Photo> findPhotosByMemberNickname(String nickname);
 }
