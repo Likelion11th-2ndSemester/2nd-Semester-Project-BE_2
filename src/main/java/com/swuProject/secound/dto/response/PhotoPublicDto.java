@@ -16,8 +16,14 @@ public class PhotoPublicDto { // 공개된 사진 전체 조회, 공개된 사�
     private static ModelMapper modelMapper = new ModelMapper();
 
     // 엔티티 -> DTO 변환
-    public static PhotoPublicDto PhotoMapper(Photo photo) {
+    public static PhotoPublicDto PhotoMapper(Photo photo, Boolean scrap) {
 
-        return modelMapper.map(photo, PhotoPublicDto.class);
+        PhotoPublicDto photoPublicDto = new PhotoPublicDto();
+        photoPublicDto.photo_id = photo.getId();
+        photoPublicDto.image_id = photo.getImage().getId();
+        photoPublicDto.numberOfPeople = photo.getNumberOfPeople();
+        photoPublicDto.scrap = scrap;
+
+        return photoPublicDto;
     }
 }

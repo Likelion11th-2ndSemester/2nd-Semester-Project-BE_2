@@ -42,12 +42,12 @@ public class PhotoFormDto { // 사진 등록
     @Size(max=50, message="최대 50자까지 작성 가능합니다.")
     private String review; // 사진관 리뷰
 
-    // default 값 지정을 위한 생성자
-    public void PhotoFormDto() {
-        anonymous = true; // 익명이 default
-        numberOfPeople = 0; // 인원수 미선택 시 default = 0
-        album_id = 0L; // 앨범 미선택 시 미분류 앨범 (id = 0)
-    }
+//    // default 값 지정을 위한 생성자
+//    public void PhotoFormDto() {
+//        anonymous = true; // 익명이 default
+//        numberOfPeople = 0; // 인원수 미선택 시 default = 0
+//        album_id = 0L; // 앨범 미선택 시 미분류 앨범 (id = 0)
+//    }
 
 
     // DTO -> 엔티티 변환

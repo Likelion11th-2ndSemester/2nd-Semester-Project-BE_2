@@ -25,29 +25,31 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    @Autowired
-    ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
 
-    @Autowired
-    ReviewService reviewService;
 
-    //리뷰 등록
-    @PostMapping("/user/photos/reivew/{id}")
-    public ResponseEntity createReview(@PathVariable Long photo_id,
-                                       @Valid @RequestBody ReviewFromDto reviewFromDto,
-                                       Principal principal){
+    //사진별 리뷰
+    @PostMapping("/user/photo/review/{photoId}/{studioId}")
+    public ResponseEntity<?> createReview(@PathVariable Long photoId,
+                                          @PathVariable Long studioId,
+                                          @Valid @RequestBody ReviewFromDto reviewFromDto,
+                                          Principal principal) {
         try {
             String email = principal.getName();
+            Long reviewId = reviewService.createReview(reviewFromDto, email, photoId, studioId);
 
-            Long id = reviewService.createReview(reviewFromDto, email, photo_id);
-            Review review = reviewRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            ReviewReturnDto reviewReturnDto =ReviewReturnDto.ReviewMapper(review);
-
-            return ResponseEntity.ok(reviewReturnDto);
-
-        }catch (Exception e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            if (reviewId != null) {
+                return ResponseEntity.ok("Review created successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Photo not found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create review");
         }
     }
 
+
 }
+

@@ -2,6 +2,7 @@ package com.swuProject.secound.article.dto;
 
 import com.swuProject.secound.article.constant.Category;
 import com.swuProject.secound.article.entity.Article;
+import com.swuProject.secound.domain.Member.Member;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
@@ -19,8 +20,9 @@ public class ArticleForm {
     private LocalDateTime regTime;
     private String postImage; // nullable
     private Category category;
+    private Member member;
 
     public Article toEntity() {
-        return new Article(id, title, content, regTime, postImage, category);
+        return new Article(id, title, content, regTime, postImage, category, member);
     }
 }

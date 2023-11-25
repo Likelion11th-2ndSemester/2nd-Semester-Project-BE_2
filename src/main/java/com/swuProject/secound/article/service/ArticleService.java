@@ -5,8 +5,11 @@ import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.article.repository.ArticleRepository;
 import com.swuProject.secound.comment.dto.CommentDto;
 import com.swuProject.secound.comment.repository.CommentRepository;
+import com.swuProject.secound.domain.Member.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +28,13 @@ public class ArticleService {
     private CommentRepository commentRepository;
 
     public List<Article> index() {
-        return articleRepository.findAll();
+        return articleRepository.findAllByOrderByRegTimeDesc();
+    }
+
+    public List<Article> searchPosts(String searchTerm) {
+        // Assuming you have a method in your repository to search articles based on a term
+        // Adjust the method name accordingly based on your actual repository
+        return articleRepository.findByTitleContainingOrContentContainingOrderByRegTimeDesc(searchTerm, searchTerm);
     }
 
     public Article show(Long id) {
@@ -41,6 +50,9 @@ public class ArticleService {
 
     public Article create(ArticleForm dto) {
         Article article = dto.toEntity();
+
+        Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        article.setMember(member);
 
         if (article.getId() != null) {
             return null;
@@ -59,6 +71,13 @@ public class ArticleService {
             return null;
         }
 
+        // Check if the authenticated user is the author of the article
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!target.getMember().getUsername().equals(userDetails.getUsername())) {
+            log.info("권한이 없습니다. id: {}, article: {}", id, article.toString());
+            return null;
+        }
+
         target.patch(article);
         Article updated = articleRepository.save(target);
         return updated;
@@ -71,18 +90,32 @@ public class ArticleService {
             return null;
         }
 
+        // Check if the authenticated user is the author of the article
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!target.getMember().getUsername().equals(userDetails.getUsername())) {
+            log.info("권한이 없습니다. id: {}", id);
+            return null;
+        }
+
         articleRepository.delete(target);
         return target;
     }
 
     public List<Article> createArticles(List<ArticleForm> dtos) {
         List<Article> articleList = dtos.stream()
-                .map(dto -> dto.toEntity())
+                .map(dto -> {
+                    Article article = dto.toEntity();
+
+                    Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    article.setMember(member);
+                    return article;
+                })
                 .collect(Collectors.toList());
-        articleList.stream()
-                .forEach(article -> articleRepository.save(article));
-        articleRepository.findById(-1L)
-                .orElseThrow(() -> new IllegalArgumentException("결제 실패!"));
+
+        articleList.forEach(article -> articleRepository.save(article));
+
+        articleRepository.findById(-1L).orElseThrow(() -> new IllegalArgumentException("작성 실패!"));
+
         return articleList;
     }
 }

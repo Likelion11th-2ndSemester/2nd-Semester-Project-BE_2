@@ -15,25 +15,12 @@ import java.time.LocalDate;
 @Setter
 public class ReviewFromDto {
 
-
-    private Long id;
-
-    private Long photo_id;
-
-    private Long studio_id;
-
-    // 만족도
-    private Long statisfaction;
-    // 청결도
+    private Long satisfaction;
     private Long cleanliness;
-    // 관리 상태
     private Long management;
-
     private String review;
 
-
-    public Review createReview(){
-        return new Review(id,statisfaction,cleanliness,management,review);
+    public Review toEntity() {
+        return new Review(null, satisfaction, cleanliness, management, review);
     }
-
 }

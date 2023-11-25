@@ -21,29 +21,31 @@ import javax.persistence.EntityNotFoundException;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final StudioRepository studioRepository;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final PhotoRepository photoRepository;
 
-    public Long createReview(ReviewFromDto reviewFromDto, String email, Long id) throws Exception {
+    private final StudioRepository studioRepository;
+
+    public Long createReview(ReviewFromDto reviewFromDto, String email, Long photoId, Long studioId) {
         try {
-            Review review = reviewFromDto.createReview();
-            Member member = memberRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+            Review review = reviewFromDto.toEntity();
+            Member member = memberRepository.findByEmail(email)
+                    .orElseThrow(() -> new EntityNotFoundException("Member not found with email: " + email));
 
-            Long photo_id = id;
-            Photo photo = photoRepository.findById(photo_id).orElseThrow(EntityNotFoundException::new);
+            Studio studio = studioRepository.findById(studioId)
+                    .orElseThrow(() -> new EntityNotFoundException("스튜디오 없음" + studioId));
 
-            Long studio_id = reviewFromDto.getStudio_id();
-            Studio studio = studioRepository.findById(studio_id).orElseThrow(EntityNotFoundException::new);
 
-            review.setMapping(member,photo,studio);
+            Photo photo = photoRepository.findById(photoId)
+                    .orElseThrow(() -> new EntityNotFoundException("Photo not found with id: " + photoId));
+
+            review.setMapping(member, photo, studio);
             reviewRepository.save(review);
 
             return review.getId();
-
         } catch (Exception e) {
-            e.printStackTrace();
+            // Handle exceptions as needed
             return null;
         }
     }

@@ -2,16 +2,14 @@ package com.swuProject.secound.comment.entity;
 
 import com.swuProject.secound.article.entity.Article;
 import com.swuProject.secound.comment.dto.CommentDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.swuProject.secound.domain.Member.Member;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
+@Getter @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,13 +23,14 @@ public class Comment {
     private Article article;
 
     @Column
-    private String nickname;
-
-    @Column
     private String body;
 
     @Column
     private LocalDateTime regTime;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @PrePersist
     public void prePersist() {
@@ -48,9 +47,9 @@ public class Comment {
         return new Comment(
                 dto.getId(),
                 article,
-                dto.getNickname(),
                 dto.getBody(),
-                dto.getRegTime()
+                dto.getRegTime(),
+                dto.getMember()
         );
     }
 }

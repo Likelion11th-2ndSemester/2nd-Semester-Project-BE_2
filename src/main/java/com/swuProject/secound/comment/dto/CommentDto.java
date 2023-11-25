@@ -1,6 +1,7 @@
 package com.swuProject.secound.comment.dto;
 
 import com.swuProject.secound.comment.entity.Comment;
+import com.swuProject.secound.domain.Member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class CommentDto {
     private Long articleId;
     private String body;
     private LocalDateTime regTime;
-    private String nickname;
+    private Member member;
 
     public static CommentDto createCommentDto(Comment comment) {
         return new CommentDto(
@@ -25,7 +26,7 @@ public class CommentDto {
                 comment.getArticle().getId(),
                 comment.getBody(),
                 comment.getRegTime(),
-                comment.getNickname()
+                comment.getMember()
                 );
     }
 }
