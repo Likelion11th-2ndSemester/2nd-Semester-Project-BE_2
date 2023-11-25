@@ -240,9 +240,9 @@ public class PhotoService {
     }
 
     // 태그된 친구명을 가진 사진 전체 조회
-    public AlbumReturnDto getTaggedPhotoList(Long album_id, String username) {
+    public AlbumReturnDto getTaggedPhotoList(Long album_id, String nickname) {
         Album album = albumRepository.findById(album_id).orElseThrow(EntityNotFoundException::new);
-        Member member = memberRepository.findByName(username);
+        Member member = memberRepository.findByNickname(nickname);
 
         List<Photo> allPhotoList = album.getPhotoList();
         List<Photo> taggedPhotoList = new ArrayList<>();
