@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -45,11 +46,17 @@ public class InviteController {
     }
 
     @GetMapping("/user/friends")
-    public ResponseEntity<List<Member>> getFriendsForCurrentUser(Principal principal) {
+    public ResponseEntity<List<Long>> getFriendIdsForCurrentUser(Principal principal) {
         try {
             String userEmail = principal.getName();
             List<Member> friends = inviteService.getFriends(userEmail);
-            return new ResponseEntity<>(friends, HttpStatus.OK);
+
+            // Extracting friend IDs from the list of friends
+            List<Long> friendIds = friends.stream()
+                    .map(Member::getId)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(friendIds, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
