@@ -45,18 +45,15 @@ public class InviteController {
         }
     }
 
-    @GetMapping("/user/friends")
-    public ResponseEntity<List<Long>> getFriendIdsForCurrentUser(Principal principal) {
+    @GetMapping("/friends")
+    public ResponseEntity<List<Member>> getFriendIdsForCurrentUser() {
         try {
-            String userEmail = principal.getName();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userEmail = authentication.getName(); // Assuming the email is the username
+
             List<Member> friends = inviteService.getFriends(userEmail);
 
-            // Extracting friend IDs from the list of friends
-            List<Long> friendIds = friends.stream()
-                    .map(Member::getId)
-                    .collect(Collectors.toList());
-
-            return new ResponseEntity<>(friendIds, HttpStatus.OK);
+            return new ResponseEntity<>(friends, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
