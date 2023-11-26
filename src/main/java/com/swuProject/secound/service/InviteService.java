@@ -6,6 +6,7 @@ import com.swuProject.secound.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,5 +39,26 @@ public class InviteService {
     public List<Member> getFriends(String userEmail) {
         Member member = findMemberByEmail(userEmail); // Implement findMemberByEmail method
         return member.getFriends();
+    }
+
+    public void deleteFriend(String userEmail, Long friendId) {
+        Member loggedInUser = findMemberByEmail(userEmail);
+        Member friendToDelete = findMemberById(friendId); // Implement findMemberById method
+
+        // Remove the friend from the list of friends
+        loggedInUser.getFriends().remove(friendToDelete);
+
+        // Save the changes to the database
+        memberRepository.save(loggedInUser); // Assuming memberRepository is an instance of JpaRepository<Member, Long>
+    }
+
+    public Member findMemberById(Long memberId) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId); // Assuming memberRepository is an instance of JpaRepository<Member, Long>
+
+        if (memberOptional.isPresent()) {
+            return memberOptional.get();
+        } else {
+            throw new EntityNotFoundException("Member not found with id: " + memberId);
+        }
     }
 }

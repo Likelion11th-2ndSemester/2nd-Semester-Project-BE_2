@@ -61,4 +61,17 @@ public class InviteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/friends/{friendId}")
+    public ResponseEntity<Void> deleteFriendForCurrentUser(@PathVariable Long friendId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userEmail = authentication.getName(); // Assuming the email is the username
+
+            inviteService.deleteFriend(userEmail, friendId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
