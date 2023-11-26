@@ -1,4 +1,5 @@
 package com.swuProject.secound.domain.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swuProject.secound.domain.Photo.Scrap;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,7 @@ public class Member implements UserDetails {
     @Column(length = 30, nullable = false)
     private String nickname;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "friends",

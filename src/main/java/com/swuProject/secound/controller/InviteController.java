@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Optional;
 
 
@@ -29,8 +30,12 @@ public class InviteController {
     }
 
     @PostMapping("/add-friend")
-    public ResponseEntity<String> addFriendByEmail(@RequestParam String userEmail, @RequestParam String friendEmail) {
+    public ResponseEntity<String> addFriendByEmail(@RequestParam(name = "friendEmail") String friendEmail) {
         try {
+            // Get the currently authenticated user's email
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userEmail = authentication.getName(); // Assuming the email is the username
+
             inviteService.addFriend(userEmail, friendEmail);
             return new ResponseEntity<>("Friendship added successfully", HttpStatus.OK);
         } catch (Exception e) {
