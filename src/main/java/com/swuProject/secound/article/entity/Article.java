@@ -2,6 +2,7 @@ package com.swuProject.secound.article.entity;
 
 import com.swuProject.secound.article.constant.Category;
 import com.swuProject.secound.domain.Member.Member;
+import com.swuProject.secound.domain.Photo.Image;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,8 +28,10 @@ public class Article {
     @Column
     private LocalDateTime regTime;
 
-    @Column(nullable = true)
-    private String postImage;
+    // 일대일 단방향 - 이미지
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="image_id", nullable = true)
+    private Image image;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -47,8 +50,8 @@ public class Article {
             this.title = article.title;
         if (article.content != null)
             this.content = article.content;
-        if (article.postImage != null)
-            this.postImage = article.postImage;
+        if (article.image != null)
+            this.image = article.image;
         if (article.category != null)
             this.category = article.category;
     }

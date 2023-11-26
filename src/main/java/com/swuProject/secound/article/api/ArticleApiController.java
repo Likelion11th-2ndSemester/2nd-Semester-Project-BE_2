@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @Slf4j
@@ -44,8 +46,8 @@ public class ArticleApiController {
 
     //POST
     @PostMapping("/articles")
-    public ResponseEntity<Article> creat(@RequestBody ArticleForm dto) {
-        Article created = articleService.create(dto);
+    public ResponseEntity<Article> creat(@RequestPart("dto") ArticleForm dto, @RequestPart(name="imgFile") MultipartFile imgFile) throws Exception {
+        Article created = articleService.create(dto, imgFile);
 
         return (created != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(created) :

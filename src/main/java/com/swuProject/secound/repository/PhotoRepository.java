@@ -1,6 +1,7 @@
 package com.swuProject.secound.repository;
 
 import com.swuProject.secound.domain.Photo.Photo;
+import com.swuProject.secound.domain.Studio.Studio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,8 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     List<Photo> findByAnonymousIsTrueAndNumberOfPeople(Integer numberOfPeople);
 
     // 특정 앨범에
+
+    //List<Photo> findByStudioId(Long studioId);
+
+    List<Photo> findByStudio(Studio studio);
 }
