@@ -34,4 +34,9 @@ public class InviteService {
         memberRepository.save(user);
         memberRepository.save(friend);
     }
+
+    public List<Member> getFriends(String userEmail) {
+        Member member = findMemberByEmail(userEmail); // Implement findMemberByEmail method
+        return member.getFriends();
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -40,6 +41,17 @@ public class InviteController {
             return new ResponseEntity<>("Friendship added successfully", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/user/friends")
+    public ResponseEntity<List<Member>> getFriendsForCurrentUser(Principal principal) {
+        try {
+            String userEmail = principal.getName();
+            List<Member> friends = inviteService.getFriends(userEmail);
+            return new ResponseEntity<>(friends, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
