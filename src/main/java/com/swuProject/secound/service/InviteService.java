@@ -23,4 +23,15 @@ public class InviteService {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Member not found with email: " + email));
     }
+
+    public void addFriend(String userEmail, String friendEmail) {
+        Member user = findMemberByEmail(userEmail);
+        Member friend = findMemberByEmail(friendEmail);
+
+        user.getFriends().add(friend);
+        friend.getFriends().add(user);
+
+        memberRepository.save(user);
+        memberRepository.save(friend);
+    }
 }

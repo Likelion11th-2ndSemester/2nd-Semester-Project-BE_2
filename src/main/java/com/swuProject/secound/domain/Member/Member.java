@@ -39,6 +39,13 @@ public class Member implements UserDetails {
     @Column(length = 30, nullable = false)
     private String nickname;
 
+    @ManyToMany
+    @JoinTable(
+            name = "friends",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    private List<Member> friends = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
