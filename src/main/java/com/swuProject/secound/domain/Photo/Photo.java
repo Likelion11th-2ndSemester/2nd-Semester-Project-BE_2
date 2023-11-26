@@ -73,7 +73,9 @@ public class Photo {
         this.album = album;
         this.studio = studio;
         this.image = image;
+
     }
+
 
     // 연관관계 매핑 메소드 - 사진 수정 시
     public void setUpdateMapping(Album album, Studio studio) {

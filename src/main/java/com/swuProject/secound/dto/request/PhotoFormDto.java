@@ -17,6 +17,8 @@ public class PhotoFormDto { // 사진 등록
 
     private Long id;
 
+    private Long image_id; // 이미지 아이디
+
     private ImageFormDto imageFormDto; // 수정 시 이미지 정보 저장
 
     @NotBlank(message="촬영 날짜는 필수 입력 값입니다.")
@@ -33,14 +35,6 @@ public class PhotoFormDto { // 사진 등록
     private Integer numberOfPeople; // 인원수
 
     private List<Long> taggedUserList = new ArrayList<>(); // 친구 해시태그
-
-    // 평가
-    private Integer satisfaction; // 만족도
-    private Integer cleanliness; // 청결도
-    private Integer management; // 관리상태
-
-    @Size(max=50, message="최대 50자까지 작성 가능합니다.")
-    private String review; // 사진관 리뷰
 
 //    // default 값 지정을 위한 생성자
 //    public void PhotoFormDto() {
