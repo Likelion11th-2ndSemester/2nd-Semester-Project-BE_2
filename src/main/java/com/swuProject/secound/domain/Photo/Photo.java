@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 public class Photo {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photo_id")
     private Long id;
 
@@ -47,7 +47,7 @@ public class Photo {
     private List<Hashtag> hashtagList = new ArrayList<>();
 
     // 일대일 단방향 - 이미지
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="image_id")
     private Image image;
 
@@ -114,8 +114,6 @@ public class Photo {
     public String getUsername() {
         return member.getUsername();
     }
-
-
 
     // 매핑된 스튜디오 아이디 반환
     public Long getStudioId() {

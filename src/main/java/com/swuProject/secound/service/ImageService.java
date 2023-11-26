@@ -53,11 +53,12 @@ public class ImageService {
             }
 
             // 수정하고자 하는 상품 이미지 정보 세팅(업데이트)
-            String originalImgName = savedImg.getOriginalImgName();
+            String originalImgName = imgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(photoImageLocation, originalImgName, imgFile.getBytes());
             String imgPath = "/images/photo/" + imgName;
 
             savedImg.updateImg(originalImgName, imgName, imgPath);
+            imageRepository.save(savedImg);
         }
     }
 

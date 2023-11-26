@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter @Setter
 public class Hashtag { // 친구 태그
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="hashtag_id")
     private Long id;
 

@@ -93,9 +93,9 @@ public class AlbumService {
     }
 
     // 앨범 전체 조회 - 검색한 친구명 포함 필터링
-    public List<AlbumAllReturnDto> getAlbumListWithHashtag(String username) {
-        // 1. 검색한 유저명을 가진 해시태그 객체와 연관된 사진 객체 조회
-        List<Photo> photoList = hashtagRepositoryCustomImpl.findPhotosByMemberUsername(username);
+    public List<AlbumAllReturnDto> getAlbumListWithHashtag(String nickname) {
+        // 1. 검색한 닉네임을 가진 해시태그 객체와 연관된 사진 객체 조회
+        List<Photo> photoList = hashtagRepositoryCustomImpl.findPhotosByMemberNickname(nickname);
 
         // 중복 제거하기 위해 HashSet 생성
         Set<Album> uniqueAlbumSet = new HashSet<>();

@@ -15,11 +15,11 @@ public class HashtagRepositoryCustomImpl implements HashtagRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<Photo> findPhotosByMemberUsername(String username) {
+    public List<Photo> findPhotosByMemberNickname(String nickname) {
         // 유저명 파라미터를 가진 멤버와 매핑된 해시태그 객체의 사진 엔티티 조회
-        String jpql = "SELECT h.photo FROM Hashtag h WHERE h.member.name = :username";
+        String jpql = "SELECT h.photo FROM Hashtag h WHERE h.member.nickname = :nickname";
         TypedQuery<Photo> query = entityManager.createQuery(jpql, Photo.class);
-        query.setParameter("username", username);
+        query.setParameter("nickname", nickname);
         return query.getResultList();
     }
 }

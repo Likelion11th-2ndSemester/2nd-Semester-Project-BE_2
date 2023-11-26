@@ -12,7 +12,7 @@ public class Image {
 
     @Id
     @Column(name="img_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String imgName;

@@ -17,7 +17,7 @@ import java.util.List;
 @Getter @Setter
 public class Album {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="album_id")
     private Long id;
 
