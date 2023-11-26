@@ -40,4 +40,4 @@ out/
 ### 이미지
 photoImage/*
 
-
+src/main/resources/application.properties
