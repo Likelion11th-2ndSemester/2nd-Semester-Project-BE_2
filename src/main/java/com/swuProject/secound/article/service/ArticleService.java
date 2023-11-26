@@ -65,6 +65,7 @@ public class ArticleService {
         Article article = dto.toEntity();
         Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         article.setMember(member);
+        article.setImage(image);
 
         if (article.getId() != null) {
             return null;
