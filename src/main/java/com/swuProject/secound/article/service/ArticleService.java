@@ -6,12 +6,15 @@ import com.swuProject.secound.article.repository.ArticleRepository;
 import com.swuProject.secound.comment.dto.CommentDto;
 import com.swuProject.secound.comment.repository.CommentRepository;
 import com.swuProject.secound.domain.Member.Member;
+import com.swuProject.secound.domain.Photo.Image;
+import com.swuProject.secound.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +29,10 @@ public class ArticleService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private ImageService imageService;
+
 
     public List<Article> index() {
         return articleRepository.findAllByOrderByRegTimeDesc();
@@ -48,11 +55,17 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public Article create(ArticleForm dto) {
-        Article article = dto.toEntity();
+    public Article create(ArticleForm dto, MultipartFile imgFile) throws Exception {
 
+        Image image = new Image();
+
+        // 이미지 저장
+        imageService.saveImg(image, imgFile);
+
+        Article article = dto.toEntity();
         Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         article.setMember(member);
+        article.setImage(image);
 
         if (article.getId() != null) {
             return null;
