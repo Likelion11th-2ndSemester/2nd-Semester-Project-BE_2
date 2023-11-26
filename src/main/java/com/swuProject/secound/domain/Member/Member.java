@@ -1,17 +1,13 @@
 package com.swuProject.secound.domain.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swuProject.secound.domain.Photo.Scrap;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -43,6 +39,18 @@ public class Member implements UserDetails {
 
     @Column(length = 30, nullable = false)
     private String nickname;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "friends",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    private List<Member> friends = new ArrayList<>();
+
+    public List<Member> getFriends() {
+        return friends;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
