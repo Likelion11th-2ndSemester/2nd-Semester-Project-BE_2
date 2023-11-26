@@ -27,6 +27,11 @@ public class Studio {
     // 관리 상태 평균
     private Long management;
 
+    // 총합 필드 추가
+    private Long totalSatisfaction;
+    private Long totalCleanliness;
+    private Long totalManagement;
+
     // 일대다 양방향 - 리뷰
     @OneToMany(mappedBy = "studio")
     private List<Review> reviewList = new ArrayList<>();

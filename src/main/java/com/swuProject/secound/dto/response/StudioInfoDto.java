@@ -1,4 +1,4 @@
-package com.swuProject.secound.dto.request;
+package com.swuProject.secound.dto.response;
 
 import com.swuProject.secound.domain.Studio.Studio;
 import lombok.Getter;

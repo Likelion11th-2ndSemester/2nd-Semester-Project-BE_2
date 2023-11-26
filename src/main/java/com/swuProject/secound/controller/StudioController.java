@@ -2,8 +2,9 @@ package com.swuProject.secound.controller;
 
 import com.swuProject.secound.domain.Photo.Photo;
 import com.swuProject.secound.domain.Studio.Studio;
-import com.swuProject.secound.dto.request.StudioInfoDto;
+import com.swuProject.secound.dto.response.StudioInfoDto;
 import com.swuProject.secound.dto.response.StudioReturnDto;
+import com.swuProject.secound.dto.response.StudioWithPhotosDto;
 import com.swuProject.secound.repository.StudioRepository;
 import com.swuProject.secound.service.ReviewService;
 import com.swuProject.secound.service.StudioService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -39,6 +41,7 @@ public class StudioController {
         return ResponseEntity.ok(studioReturnDto);
     }
 
+    //사진관 지점별 상세 페이지_1
     @GetMapping("/user/studio/{id}")
     public ResponseEntity<?> getStudioInfo(@PathVariable Long id) {
         try {
@@ -60,16 +63,27 @@ public class StudioController {
         }
     }
 
+
+    //기타리뷰
     @GetMapping("/user/studio/{id}/review")
     public ResponseEntity<List<String>> getReviewsByStudioId(@PathVariable Long id) {
         List<String> reviewList = studioService.getReviewsByStudioId(id);
         return ResponseEntity.ok(reviewList);
     }
 
+
+    ////사진관 지점별 상세 페이지_2
     @GetMapping("user/studio/{id}/photo")
-    public ResponseEntity<List<Photo>> getPhotoList(@PathVariable Long id) {
+    public ResponseEntity<StudioWithPhotosDto> getStudioWithPhotos(@PathVariable Long id) {
+        Studio studio = studioService.getStudioById(id);
+
+        // 스튜디오에 매핑된 포토들을 가져옴
         List<Photo> photoList = studioService.getPhotoList(id);
-        return ResponseEntity.ok(photoList);
+
+        // StudioWithPhotosDto를 사용하여 데이터를 구성
+        StudioWithPhotosDto studioWithPhotosDto = StudioWithPhotosDto.from(studio, photoList);
+
+        return ResponseEntity.ok(studioWithPhotosDto);
     }
 
 
