@@ -20,12 +20,17 @@ public class Studio {
     private Long id;
 
 
-    // 만족도
+    // 만족도 평균
     private Long statisfaction;
-    // 청결도
+    // 청결도 평균
     private Long cleanliness;
-    // 관리 상태
+    // 관리 상태 평균
     private Long management;
+
+    // 총합 필드 추가
+    private Long totalSatisfaction;
+    private Long totalCleanliness;
+    private Long totalManagement;
 
     // 일대다 양방향 - 리뷰
     @OneToMany(mappedBy = "studio")
