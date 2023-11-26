@@ -101,7 +101,7 @@ public class PhotoService {
     }
 
     // 사진 수정
-    public Long updatePhoto(Long photo_id, PhotoUpdateDto photoUpdateDto, MultipartFile imgFile) throws Exception {
+    public Long updatePhoto(Long photo_id, PhotoUpdateDto photoUpdateDto) throws Exception {
         try {
             // DTO -> 엔티티 변환
             Photo photo = photoUpdateDto.updatePhoto();
@@ -142,11 +142,6 @@ public class PhotoService {
                 hashtagRepository.save(newHashtag);
             }
 
-
-            // 이미지 수정
-            Long image_id = photoUpdateDto.getImage_id();
-            imageService.updateImg(image_id, imgFile);
-
             Photo updated = photoRepository.save(target);
 
             return updated.getId();
@@ -155,6 +150,21 @@ public class PhotoService {
             return null;
         }
       }
+
+    // 이미지 수정
+    public Long updateImage(Long image_id, MultipartFile imgFile) throws Exception {
+        try {
+
+            Image image = imageRepository.findById(image_id).orElseThrow(EntityNotFoundException::new);
+            imageService.updateImg(image_id, imgFile);
+            return image.getId();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     // 사진 상세 조회
     @Transactional(readOnly = true)
