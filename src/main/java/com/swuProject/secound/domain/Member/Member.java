@@ -48,6 +48,10 @@ public class Member implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "friend_id"))
     private List<Member> friends = new ArrayList<>();
 
+    public List<Member> getFriends() {
+        return friends;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
