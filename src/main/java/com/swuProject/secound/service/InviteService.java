@@ -12,24 +12,15 @@ import java.util.Optional;
 @Service
 public class InviteService {
 
+    private final MemberRepository memberRepository;
+
     @Autowired
-    private MemberRepository memberRepository;
-
-    public Optional<Member> searchEmail(String searchTerm) {
-        return memberRepository.findByEmail(searchTerm);
+    public InviteService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
-    public void addFriend(Member member, Member friend) {
-        member.getFriends().add(friend);
-        friend.getFriends().add(member);
-        memberRepository.save(member);
-        memberRepository.save(friend);
-    }
-
-    public void removeFriend(Member member, Member friend) {
-        member.getFriends().remove(friend);
-        friend.getFriends().remove(member);
-        memberRepository.save(member);
-        memberRepository.save(friend);
+    public Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Member not found with email: " + email));
     }
 }
