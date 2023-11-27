@@ -68,11 +68,11 @@ public class Photo {
 
 
     // 연관관계 매핑 메소드 - 사진 생성 시
-    public void setNewMapping(Member member, Album album, Studio studio, Image image) {
+    public void setNewMapping(Member member, Album album, Studio studio) {
         this.member = member;
         this.album = album;
         this.studio = studio;
-        this.image = image;
+        //this.image = image;
 
     }
 

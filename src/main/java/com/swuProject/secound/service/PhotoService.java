@@ -70,10 +70,10 @@ public class PhotoService {
             // 사진관 저장
 
             // 이미지 매핑
-            Image image = imageRepository.findById(photoFormDto.getImage_id()).orElseThrow(EntityNotFoundException::new);
+            //Image image = imageRepository.findById(photoFormDto.getImage_id()).orElseThrow(EntityNotFoundException::new);
 
             // 연관관계 세팅
-            photo.setNewMapping(member, album, studio, image);
+            photo.setNewMapping(member, album, studio);
             photoRepository.save(photo);
 
             return photo.getId();
