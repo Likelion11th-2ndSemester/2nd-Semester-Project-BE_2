@@ -62,7 +62,7 @@ public class PhotoController {
 
     // 이미지 생성
     @PostMapping("/user/photos/image")
-    public ResponseEntity createImage(@RequestParam MultipartFile imgFile) {
+    public ResponseEntity createImage(@RequestBody MultipartFile imgFile) {
         try {
             Long img_id = photoService.createImage(imgFile);
             return ResponseEntity.ok(img_id);
