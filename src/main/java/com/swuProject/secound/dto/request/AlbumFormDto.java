@@ -18,13 +18,13 @@ public class AlbumFormDto { // 앨범 생성, 앨범 수정
     @NotBlank(message = "앨범명은 필수 입력값 입니다.")
     private String albumName;
 
-    @Size(max = 6, message="색상코드를 작성해주세요.")
+    @Size(max = 7, message="색상코드를 작성해주세요.")
     private String color;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
     public AlbumFormDto() {
-        color = "FF7F00"; // 기본값 주황색
+        color = "#FF7F00"; // 기본값 주황색
     }
 
 

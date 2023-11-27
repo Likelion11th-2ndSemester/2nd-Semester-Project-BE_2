@@ -18,9 +18,6 @@ public class PhotoUpdateDto { // 사진 수정
 
     private Long image_id;
 
-    @NotBlank(message="사진은 필수 입력 값입니다.")
-    private ImageFormDto imageFormDto; // 수정 시 이미지 정보 저장
-
     @NotBlank(message="촬영 날짜는 필수 입력 값입니다.")
     private String filmingDate;
 

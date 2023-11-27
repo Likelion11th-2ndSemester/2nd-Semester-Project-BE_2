@@ -18,6 +18,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -35,16 +36,15 @@ public class PhotoController {
     private final PhotoRepository photoRepository;
     private final ImageRepository imageRepository;
 
-    // 사진 등록
+    // 사진 생성
     @PostMapping("/user/photos")
-    public ResponseEntity createPhoto(@RequestPart("photoFormDto") PhotoFormDto photoFormDto,
-                                      @RequestPart(name="imgFile") MultipartFile imgFile,
+    public ResponseEntity createPhoto(@RequestBody PhotoFormDto photoFormDto,
                                       Principal principal) {
         // 사용자 조회
         String email = principal.getName();
 
         try {
-            Long id = photoService.createPhoto(photoFormDto, email, imgFile);
+            Long id = photoService.createPhoto(photoFormDto, email);
             Photo photo = photoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
             Image image = photo.getImage();
             ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
@@ -60,13 +60,23 @@ public class PhotoController {
         }
     }
 
+    // 이미지 생성
+    @PostMapping("/user/photos/image")
+    public ResponseEntity createImage(@RequestBody MultipartFile imgFile) {
+        try {
+            Long img_id = photoService.createImage(imgFile);
+            return ResponseEntity.ok(img_id);
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     // 사진 수정
     @PutMapping ("/user/photos/{photo_id}")
     public ResponseEntity updatePhoto(@PathVariable Long photo_id,
-                                      @RequestPart("photoUpdateDto") PhotoUpdateDto photoUpdateDto,
-                                      @RequestPart(name="imgFile") MultipartFile imgFile) {
+                                      @RequestBody PhotoUpdateDto photoUpdateDto) {
         try {
-            Long id = photoService.updatePhoto(photo_id, photoUpdateDto, imgFile);
+            Long id = photoService.updatePhoto(photo_id, photoUpdateDto);
             Photo photo = photoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
             Image image = photo.getImage();
             ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
@@ -79,6 +89,18 @@ public class PhotoController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("앨범을 찾을 수 없습니다.");
 
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 이미지 수정
+    @PutMapping("/user/photos/image/{image_id}")
+    public ResponseEntity updateImage(@PathVariable Long image_id,
+                                      @RequestParam MultipartFile imgFile) {
+        try {
+            Long img_id = photoService.updateImage(image_id, imgFile);
+            return ResponseEntity.ok(img_id);
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
