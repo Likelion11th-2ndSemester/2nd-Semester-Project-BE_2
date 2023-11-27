@@ -46,12 +46,12 @@ public class PhotoController {
         try {
             Long id = photoService.createPhoto(photoFormDto, email);
             Photo photo = photoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            Image image = photo.getImage();
-            ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
+            //Image image = photo.getImage();
+            //ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
 
             // 엔티티 -> DTO 변환
             PhotoReturnDto photoReturnDto = PhotoReturnDto.PhotoMapper(photo);
-            photoReturnDto.setImageFormDto(imageFormDto);
+            //photoReturnDto.setImageFormDto(imageFormDto);
 
             return ResponseEntity.ok(photoReturnDto);
 
@@ -78,12 +78,12 @@ public class PhotoController {
         try {
             Long id = photoService.updatePhoto(photo_id, photoUpdateDto);
             Photo photo = photoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            Image image = photo.getImage();
-            ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
+            //Image image = photo.getImage();
+            //ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
 
             // 엔티티 -> DTO 변환
             PhotoReturnDto photoReturnDto = PhotoReturnDto.PhotoMapper(photo);
-            photoReturnDto.setImageFormDto(imageFormDto);
+            //photoReturnDto.setImageFormDto(imageFormDto);
 
             return ResponseEntity.ok(photoReturnDto);
         } catch (EntityNotFoundException e) {
@@ -128,10 +128,10 @@ public class PhotoController {
             PhotoReturnDto photoReturnDto = photoService.getPhotoDetail(photo_id);
 
             // 이미지 조회 후 DTO로 변환 후 사진 DTO에 넣어줌
-            Photo photo = photoRepository.findById(photo_id).orElseThrow(EntityNotFoundException::new);
-            Image image = photo.getImage();
-            ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
-            photoReturnDto.setImageFormDto(imageFormDto);
+            //Photo photo = photoRepository.findById(photo_id).orElseThrow(EntityNotFoundException::new);
+            //Image image = photo.getImage();
+            //ImageFormDto imageFormDto = ImageFormDto.ImageMapper(image);
+            //photoReturnDto.setImageFormDto(imageFormDto);
 
             return ResponseEntity.ok(photoReturnDto);
 

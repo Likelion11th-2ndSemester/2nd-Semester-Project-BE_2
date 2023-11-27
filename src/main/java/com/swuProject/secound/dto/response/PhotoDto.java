@@ -11,14 +11,14 @@ import org.springframework.security.core.parameters.P;
 public class PhotoDto {
 
     private Long photo_id;
-    private Long image_id;
+    //private Long image_id;
 
 
     // 엔티티 -> DTO 변환
     public static PhotoDto photoDtoMapper(Photo photo) {
         PhotoDto photoDto = new PhotoDto();
         photoDto.setPhoto_id(photo.getId());
-        photoDto.setImage_id(photo.getImage().getId());
+        //photoDto.setImage_id(photo.getImage().getId());
 
         return photoDto;
     }

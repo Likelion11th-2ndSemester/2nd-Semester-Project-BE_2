@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 public class PhotoPublicDto { // 공개된 사진 전체 조회, 공개된 사진 상세 조회, 인원 수 필터링
 
     private Long photo_id;
-    private Long image_id;
+    //private Long image_id;
     private Integer numberOfPeople;
     private Boolean scrap;
 
@@ -20,7 +20,7 @@ public class PhotoPublicDto { // 공개된 사진 전체 조회, 공개된 사�
 
         PhotoPublicDto photoPublicDto = new PhotoPublicDto();
         photoPublicDto.photo_id = photo.getId();
-        photoPublicDto.image_id = photo.getImage().getId();
+        //photoPublicDto.image_id = photo.getImage().getId();
         photoPublicDto.numberOfPeople = photo.getNumberOfPeople();
         photoPublicDto.scrap = scrap;
 

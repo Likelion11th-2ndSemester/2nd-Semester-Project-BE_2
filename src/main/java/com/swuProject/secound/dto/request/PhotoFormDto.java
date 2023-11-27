@@ -17,9 +17,9 @@ public class PhotoFormDto { // 사진 등록
 
     private Long id;
 
-    private Long image_id; // 이미지 아이디
+    //private Long image_id; // 이미지 아이디
 
-    private ImageFormDto imageFormDto; // 수정 시 이미지 정보 저장
+    //private ImageFormDto imageFormDto; // 수정 시 이미지 정보 저장
 
     @NotBlank(message="촬영 날짜는 필수 입력 값입니다.")
     private String filmingDate;

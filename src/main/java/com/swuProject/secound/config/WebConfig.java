@@ -7,6 +7,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
+
+import java.io.File;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -14,11 +17,14 @@ public class WebConfig implements WebMvcConfigurer {
     String uploadPath;
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry resistry) {
-        resistry.addResourceHandler("/images/**")
-                .addResourceLocations(uploadPath);
-    }
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
+        registry.addResourceHandler("/static/photoImg/" + "/**")
+                .addResourceLocations("file:///" + uploadPath +"/")
+                .setCachePeriod(3600)
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver());
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

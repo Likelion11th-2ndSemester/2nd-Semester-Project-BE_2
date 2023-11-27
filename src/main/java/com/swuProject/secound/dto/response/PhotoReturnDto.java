@@ -14,7 +14,7 @@ import java.util.List;
 public class PhotoReturnDto { // 사진 상세 조회, 사진 등록, 사진 수정
 
     private Long photo_id;
-    private ImageFormDto imageFormDto;
+    //private ImageFormDto imageFormDto;
     private String filmingDate;
     private Long album_id;
     private Long studio_id;
