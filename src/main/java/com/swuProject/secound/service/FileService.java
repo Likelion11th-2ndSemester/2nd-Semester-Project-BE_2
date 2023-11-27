@@ -13,10 +13,10 @@ public class FileService {
 
     // 이미지 업로드
     public String uploadFile(String uploadPath, String originalFileName, byte[] fileData) throws Exception {
-        UUID uuid = UUID.randomUUID();
-        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        //UUID uuid = UUID.randomUUID();
+        //String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 
-        String savedFileName = uuid.toString() + extension;
+        String savedFileName = originalFileName;
 
         String fileUploadFullUrl = uploadPath + "/" + savedFileName;
 
